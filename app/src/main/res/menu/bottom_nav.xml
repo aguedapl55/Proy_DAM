@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/Cuentas"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/cuentas"
+        />
+    <item
+        android:id="@+id/Categorias"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/categorias"
+        />
+    <item
+        android:id="@+id/Transacciones"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/transacciones"
+        />
+    <item
+        android:id="@+id/Estadisticas"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/estadisticas"
+        />
+    <item
+        android:id="@+id/Ajustes"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/ajustes"
+        />
+
+</menu>
