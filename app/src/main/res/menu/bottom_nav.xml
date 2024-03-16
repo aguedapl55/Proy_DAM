@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/Cuentas"
+        android:id="@+id/navCuentas"
         android:icon="@drawable/ic_launcher_background"
         android:title="@string/cuentas"
         />
     <item
-        android:id="@+id/Categorias"
+        android:id="@+id/navCategorias"
         android:icon="@drawable/ic_launcher_background"
         android:title="@string/categorias"
         />
     <item
-        android:id="@+id/Transacciones"
+        android:id="@+id/navTransacciones"
         android:icon="@drawable/ic_launcher_background"
         android:title="@string/transacciones"
         />
     <item
-        android:id="@+id/Estadisticas"
+        android:id="@+id/navEstadisticas"
         android:icon="@drawable/ic_launcher_background"
         android:title="@string/estadisticas"
         />
     <item
-        android:id="@+id/Ajustes"
+        android:id="@+id/navAjustes"
         android:icon="@drawable/ic_launcher_background"
         android:title="@string/ajustes"
         />

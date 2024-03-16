@@ -1,14 +1,11 @@
 package fp.dam.proy.proy_dam;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.MenuItem;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,27 +21,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView nav = findViewById(R.id.bottom_nav);
-        nav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.Cuentas:
-                        loadFragment(cuentasFrag);
-                        return true;
+        //BottomNavigationView nav = findViewById(R.id.bottom_nav);
+        NavigationBarView nav = findViewById(R.id.bottom_nav);
 
-                }
-                return false;
+        nav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navCuentas) {
+                loadFragment(cuentasFrag);
+            } else if (itemId == R.id.navCategorias) {
+                loadFragment(catFrag);
+            } else if (itemId == R.id.navTransacciones) {
+                loadFragment(transFrag);
+            } else if (itemId == R.id.navEstadisticas) {
+                loadFragment(estFrag);
+            } else if (itemId == R.id.navAjustes) {
+                loadFragment(ajFrag);
+            } else return false;
+            return true;
+        });
+
+        nav.setOnItemReselectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navCuentas) {
+                loadFragment(cuentasFrag);
+            } else if (itemId == R.id.navCategorias) {
+                loadFragment(catFrag);
+            } else if (itemId == R.id.navTransacciones) {
+                loadFragment(transFrag);
+            } else if (itemId == R.id.navEstadisticas) {
+                loadFragment(estFrag);
+            } else if (itemId == R.id.navAjustes) {
+                loadFragment(ajFrag);
             }
         });
 
+    }
+
         public void loadFragment(Fragment fragment) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, fragment);
+            transaction.replace(R.id.fragment_container, fragment);
             transaction.commit();
 
         }
-    }
 
 
 }

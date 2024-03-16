@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "fp.dam.proy.proy_dam"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "fp.dam.proy.proy_dam"
