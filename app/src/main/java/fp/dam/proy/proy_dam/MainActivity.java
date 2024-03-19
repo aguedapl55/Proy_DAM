@@ -1,6 +1,8 @@
 package fp.dam.proy.proy_dam;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,19 +23,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //BottomNavigationView nav = findViewById(R.id.bottom_nav);
         NavigationBarView nav = findViewById(R.id.bottom_nav);
-
         nav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             return selectFragment(itemId);
         });
-
         nav.setOnItemReselectedListener(item -> {
             int itemId = item.getItemId();
             selectFragment(itemId);
         });
 
+        ImageButton ajustesBtn = findViewById(R.id.settingsBut);
+        ajustesBtn.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, AjustesScreen.class);
+            startActivity(i);
+        });
     }
 
     public boolean selectFragment(int itemId) {

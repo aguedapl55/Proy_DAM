@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "559037057268",
+    "firebase_url": "https://proydam-apl-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "proydam-apl",
     "storage_bucket": "proydam-apl.appspot.com"
   },
