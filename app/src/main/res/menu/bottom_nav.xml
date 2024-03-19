@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navCuentas"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/credit_card_svgrepo_com"
         android:title="@string/cuentas"
         />
     <item
         android:id="@+id/navCategorias"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/palette_svgrepo_com"
         android:title="@string/categorias"
         />
     <item
         android:id="@+id/navTransacciones"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/calculator_svgrepo_com"
         android:title="@string/transacciones"
         />
     <item
         android:id="@+id/navEstadisticas"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/statistics_graph_stats_analytics_business_data_svgrepo_com"
         android:title="@string/estadisticas"
         />
     <item
         android:id="@+id/navAjustes"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/settings_svgrepo_com"
         android:title="@string/ajustes"
         />
 

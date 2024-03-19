@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "559037057268",
+    "project_id": "proydam-apl",
+    "storage_bucket": "proydam-apl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559037057268:android:ae4261393e68c34534f6a1",
+        "android_client_info": {
+          "package_name": "fp.dam.proy.proy_dam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJag1z9az89MPKt9Tya3L9TuZLvzSfQww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

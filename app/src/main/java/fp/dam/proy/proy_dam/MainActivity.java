@@ -26,43 +26,36 @@ public class MainActivity extends AppCompatActivity {
 
         nav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.navCuentas) {
-                loadFragment(cuentasFrag);
-            } else if (itemId == R.id.navCategorias) {
-                loadFragment(catFrag);
-            } else if (itemId == R.id.navTransacciones) {
-                loadFragment(transFrag);
-            } else if (itemId == R.id.navEstadisticas) {
-                loadFragment(estFrag);
-            } else if (itemId == R.id.navAjustes) {
-                loadFragment(ajFrag);
-            } else return false;
-            return true;
+            return selectFragment(itemId);
         });
 
         nav.setOnItemReselectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.navCuentas) {
-                loadFragment(cuentasFrag);
-            } else if (itemId == R.id.navCategorias) {
-                loadFragment(catFrag);
-            } else if (itemId == R.id.navTransacciones) {
-                loadFragment(transFrag);
-            } else if (itemId == R.id.navEstadisticas) {
-                loadFragment(estFrag);
-            } else if (itemId == R.id.navAjustes) {
-                loadFragment(ajFrag);
-            }
+            selectFragment(itemId);
         });
 
     }
 
-        public void loadFragment(Fragment fragment) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.commit();
+    public boolean selectFragment(int itemId) {
+        if (itemId == R.id.navCuentas) {
+            loadFragment(cuentasFrag);
+        } else if (itemId == R.id.navCategorias) {
+            loadFragment(catFrag);
+        } else if (itemId == R.id.navTransacciones) {
+            loadFragment(transFrag);
+        } else if (itemId == R.id.navEstadisticas) {
+            loadFragment(estFrag);
+        } else if (itemId == R.id.navAjustes) {
+            loadFragment(ajFrag);
+        } else return false;
+        return true;
+    }
 
-        }
+    public void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
 
 
 }

@@ -4,7 +4,7 @@
     <!--BOTTOM NAV-->
     <string name="cuentas">Cuentas</string>
     <string name="categorias">Categorias</string>
-    <string name="transacciones">Transacciones</string>
+    <string name="transacciones">Operaciones</string>
     <string name="estadisticas">Estadisticas</string>
     <string name="ajustes">Ajustes</string>
     <!-- TODO: Remove or change this placeholder text -->

@@ -6,6 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/linlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/settingsBut"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/settings_svgrepo_com"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="PLACEHOLDER" />
+
+         <ImageButton
+            android:id="@+id/settingsBut"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/add_svgrepo_com"
+            android:scaleType="fitCenter"
+             android:background="@null"
+            />
+
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
@@ -23,13 +68,15 @@
         />
 
     <androidx.fragment.app.FragmentContainerView
+        android:layout_marginTop="10dp"
         android:id="@+id/fragment_container"
-        android:name="fp.dam.proy.proy_dam.CuentasFrag"
+        android:name="fp.dam.proy.proy_dam.TransaccionesFrag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/linlayout"
+        tools:layout="@layout/fragment_transacciones" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
