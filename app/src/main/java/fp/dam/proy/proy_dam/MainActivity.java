@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
+        transaction.replace(R.id.fragment_container, fragment); //cambia al fragmento seleccionado
+        transaction.setReorderingAllowed(true); // optimiza cambios estados fragmentos -> animaciones mejores -> TODO mirar animaciones
+        transaction.addToBackStack(null); //atras tecla movil -> vuelve al fragmento anterior
         transaction.commit();
     }
 
