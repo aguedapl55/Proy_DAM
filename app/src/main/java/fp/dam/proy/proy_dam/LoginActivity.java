@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "No se ha podido iniciar sesion", Toast.LENGTH_SHORT).show();
             else {
                 Intent i = new Intent(this, MainActivity.class);
+                i.putExtra("email", email);
                 startActivity(i);
                 finish();
             }

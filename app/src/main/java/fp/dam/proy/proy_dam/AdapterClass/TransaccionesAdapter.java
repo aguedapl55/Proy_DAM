@@ -31,7 +31,7 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transacciones tr = modeList.get(position);
-        holder.fecha.setText(tr.getFecha());
+        holder.fecha.setText(tr.getFecha().toDate().toString());
         holder.lugar.setText(tr.getLugar());
         holder.producto.setText(tr.getProducto());
         holder.precio.setText(tr.getDinero());
@@ -50,10 +50,10 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
 
         public ViewHolder(View v) {
             super (v);
-            fecha = (TextView) v.findViewById(R.id.transRV_TxtFecha);
-            lugar = (TextView) v.findViewById(R.id.transRV_TxtLugar);
-            producto = (TextView) v.findViewById(R.id.transRV_TxtProd);
-            precio = (TextView) v.findViewById(R.id.transRV_TxtDinero);
+            fecha = v.findViewById(R.id.transRV_TxtFecha);
+            lugar = v.findViewById(R.id.transRV_TxtLugar);
+            producto = v.findViewById(R.id.transRV_TxtProd);
+            precio = v.findViewById(R.id.transRV_TxtDinero);
         }
     }
 }

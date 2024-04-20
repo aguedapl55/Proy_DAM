@@ -1,24 +1,18 @@
 package fp.dam.proy.proy_dam.AdapterClass;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.Timestamp;
 
 public class Transacciones {
-    JSONObject json;
     Integer dinero;
-    String producto, lugar, fecha;
+    String producto, lugar;
+    Timestamp fecha;
     //Date fecha;
 
-    public Transacciones(JSONObject json) {
-        this.json = json;
-        try {
-            this.dinero = json.getInt("PRECIO");
-            this.producto = json.getString("PRODUCTO");
-            this.lugar = json.getString("LUGAR");
-            this.fecha = json.getString("FECHA");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+    public Transacciones(Integer dinero, String producto, String lugar, Timestamp fecha) {
+        this.dinero = dinero;
+        this.producto = producto;
+        this.lugar = lugar;
+        this.fecha = fecha;
     }
 
     public Integer getDinero() {
@@ -33,7 +27,7 @@ public class Transacciones {
         return lugar;
     }
 
-    public String getFecha() {
+    public Timestamp getFecha() {
         return fecha;
     }
 }

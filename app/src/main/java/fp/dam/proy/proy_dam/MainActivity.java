@@ -2,16 +2,24 @@ package fp.dam.proy.proy_dam;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 public class MainActivity extends AppCompatActivity {
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String email;
 
     CuentasFrag cuentasFrag = new CuentasFrag();
     CategoriasFrag catFrag = new CategoriasFrag();
@@ -23,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Bundle extras = getIntent().getExtras();
+        //email = extras.getString("email");
+        email = getIntent().getExtras().getString("email");
+        //db.collection(email);
 
         NavigationBarView nav = findViewById(R.id.bottom_nav);
         nav.setOnItemSelectedListener(item -> {
@@ -38,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
         ajustesBtn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, AjustesScreen.class);
             startActivity(i);
+        });
+
+        TextView placeholder = findViewById(R.id.textView);
+        DocumentReference docRef = db.collection("users").document(email);
+        Source source = Source.DEFAULT;
+        docRef.get(source).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                Log.d("sos", "Cached document data: " + document.getData());
+                placeholder.setText(document.get("email").toString());
+            } else {
+                Log.d("sos", "Cached get failed: ", task.getException());
+            }
         });
     }
 
@@ -64,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    public void goto_AddTransaccion(View v) {
-        Intent i = new Intent(this, AddTransaccionActivity.class);
-        startActivity(i);
-    }
+    //public void goto_AddTransaccion(View v) {
+      //  Intent i = new Intent(this, AddTransaccionActivity.class);
+     //   startActivity(i);
+    //}
 
 }
