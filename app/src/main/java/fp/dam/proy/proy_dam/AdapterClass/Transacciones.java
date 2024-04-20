@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Adapters;
+package fp.dam.proy.proy_dam.AdapterClass;
 
 import org.json.JSONException;
 import org.json.JSONObject;

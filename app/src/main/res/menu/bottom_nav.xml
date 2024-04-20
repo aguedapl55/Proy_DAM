@@ -20,10 +20,12 @@
         android:icon="@drawable/statistics_graph_stats_analytics_business_data_svgrepo_com"
         android:title="@string/estadisticas"
         />
+    <!--
     <item
         android:id="@+id/navAjustes"
         android:icon="@drawable/settings_svgrepo_com"
         android:title="@string/ajustes"
         />
+        -->
 
 </menu>

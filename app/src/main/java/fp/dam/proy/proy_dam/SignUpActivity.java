@@ -2,6 +2,7 @@ package fp.dam.proy.proy_dam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -30,6 +31,11 @@ public class SignUpActivity extends AppCompatActivity {
             fbAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (!task.isSuccessful())
                     Toast.makeText(this, "No se pudo crear el usuario", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent i = new Intent(this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
             });
         } else
             Toast.makeText(this, "Las contraseñas introducidas no son iguales", Toast.LENGTH_SHORT).show();

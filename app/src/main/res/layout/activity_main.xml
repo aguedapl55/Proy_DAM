@@ -72,13 +72,14 @@
     <androidx.fragment.app.FragmentContainerView
         android:layout_marginTop="10dp"
         android:id="@+id/fragment_container"
-        android:name="fp.dam.proy.proy_dam.TransaccionesFrag"
+        android:name="fp.dam.proy.proy_dam.CuentasFrag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linlayout"
-        tools:layout="@layout/fragment_transacciones" />
+        tools:layout="@layout/fragment_cuentas"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

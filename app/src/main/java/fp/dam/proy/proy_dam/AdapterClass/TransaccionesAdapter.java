@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Adapters;
+package fp.dam.proy.proy_dam.AdapterClass;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +24,7 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(fp.dam.proy.proy_dam.R.layout.transaccion_rvrow, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(fp.dam.proy.proy_dam.R.layout.rvrow_transaccion, parent, false);
         return new ViewHolder(v);
     }
 

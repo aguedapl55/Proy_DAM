@@ -2,6 +2,7 @@ package fp.dam.proy.proy_dam;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     CategoriasFrag catFrag = new CategoriasFrag();
     TransaccionesFrag transFrag = new TransaccionesFrag();
     EstadisticasFrag estFrag = new EstadisticasFrag();
-    AjustesFrag ajFrag = new AjustesFrag();
+    //AjustesFrag ajFrag = new AjustesFrag();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(transFrag);
         } else if (itemId == R.id.navEstadisticas) {
             loadFragment(estFrag);
-        } else if (itemId == R.id.navAjustes) {
-            loadFragment(ajFrag);
+        //} else if (itemId == R.id.navAjustes) {
+            //loadFragment(ajFrag);
         } else return false;
         return true;
     }
@@ -63,5 +64,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void goto_AddTransaccion(View v) {
+        Intent i = new Intent(this, AddTransaccionActivity.class);
+        startActivity(i);
+    }
 
 }
