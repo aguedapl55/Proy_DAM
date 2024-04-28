@@ -1,21 +1,23 @@
-package fp.dam.proy.proy_dam.AdapterClass;
+package fp.dam.proy.proy_dam.Class;
 
 import com.google.firebase.Timestamp;
 
+import java.text.SimpleDateFormat;
+
 public class Transacciones {
-    Integer dinero;
+    Double dinero;
     String producto, lugar;
     Timestamp fecha;
     //Date fecha;
 
-    public Transacciones(Integer dinero, String producto, String lugar, Timestamp fecha) {
+    public Transacciones(Double dinero, String producto, String lugar, Timestamp fecha) {
         this.dinero = dinero;
         this.producto = producto;
         this.lugar = lugar;
         this.fecha = fecha;
     }
 
-    public Integer getDinero() {
+    public Double getDinero() {
         return dinero;
     }
 
@@ -27,7 +29,8 @@ public class Transacciones {
         return lugar;
     }
 
-    public Timestamp getFecha() {
-        return fecha;
+    public String getFecha() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        return sdf.format(fecha.toDate());
     }
 }

@@ -19,9 +19,6 @@
                 app:layout_constraintEnd_toStartOf="@id/transRV_TxtProd"
                 app:layout_constraintTop_toTopOf="parent"
                 />
-                <!--
-                android:text="dineros"
-                -->
 
             <TextView
                 android:id="@+id/transRV_TxtProd"
@@ -31,9 +28,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
-                <!--
-                android:text="producto"
-                -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -51,9 +45,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/transRV_TxtLugar"
                 />
-                <!--
-                android:text="fecha"
-                -->
 
             <TextView
                 android:id="@+id/transRV_TxtLugar"
@@ -63,9 +54,7 @@
                 app:layout_constraintStart_toEndOf="@id/transRV_TxtFecha"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
-                <!--
-                android:text="lugar"
-                -->
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

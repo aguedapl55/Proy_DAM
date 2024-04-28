@@ -23,20 +23,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View v) {
-        String email = emailInput.getText().toString();
-        String password = passwordInput.getText().toString();
-        FirebaseAuth fbAuth = FirebaseAuth.getInstance();
-        fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (!task.isSuccessful())
-                Toast.makeText(this, "No se ha podido iniciar sesion", Toast.LENGTH_SHORT).show();
-            else {
-                Intent i = new Intent(this, MainActivity.class);
-                i.putExtra("email", email);
-                startActivity(i);
-                finish();
-            }
-        });
-
+        try {
+            String email = emailInput.getText().toString();
+            String password = passwordInput.getText().toString();
+            FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+            fbAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (!task.isSuccessful())
+                    Toast.makeText(this, "No se ha podido iniciar sesion", Toast.LENGTH_SHORT).show();
+                else {
+                    Intent i = new Intent(this, MainActivity.class);
+                    i.putExtra("email", email);
+                    startActivity(i);
+                    finish();
+                }
+            });
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            Toast.makeText(this, "No se han rellenado todos los campos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void goto_signup(View v) {

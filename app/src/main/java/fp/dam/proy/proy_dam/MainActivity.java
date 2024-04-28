@@ -3,6 +3,7 @@ package fp.dam.proy.proy_dam;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Bundle extras = getIntent().getExtras();
-        //email = extras.getString("email");
         email = getIntent().getExtras().getString("email");
         //db.collection(email);
 
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 Log.d("sos", "Cached document data: " + document.getData());
-                placeholder.setText(document.get("email").toString());
+                placeholder.setText(email);
             } else {
                 Log.d("sos", "Cached get failed: ", task.getException());
             }
@@ -82,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadFragment(Fragment fragment) {
+        Bundle args = new Bundle();
+        args.putString("email", email);
+        fragment.setArguments(args);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment); //cambia al fragmento seleccionado
         transaction.setReorderingAllowed(true); // optimiza cambios estados fragmentos -> animaciones mejores -> TODO mirar animaciones
@@ -89,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    //public void goto_AddTransaccion(View v) {
-      //  Intent i = new Intent(this, AddTransaccionActivity.class);
-     //   startActivity(i);
-    //}
+    public void goto_AddTransaccion(View v) {
+        Intent i = new Intent(this, AddTransaccionActivity.class);
+        startActivity(i);
+    }
 
 }

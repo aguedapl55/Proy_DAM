@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import fp.dam.proy.proy_dam.Class.Transacciones;
 import fp.dam.proy.proy_dam.R;
 
 public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdapter.ViewHolder> {
@@ -30,16 +31,19 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bind(modeList.get(position));
+        /*
         Transacciones tr = modeList.get(position);
         holder.fecha.setText(tr.getFecha().toDate().toString());
         holder.lugar.setText(tr.getLugar());
         holder.producto.setText(tr.getProducto());
-        holder.precio.setText(tr.getDinero());
+        holder.precio.setText(tr.getDinero().toString());
+         */
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return modeList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -54,6 +58,13 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
             lugar = v.findViewById(R.id.transRV_TxtLugar);
             producto = v.findViewById(R.id.transRV_TxtProd);
             precio = v.findViewById(R.id.transRV_TxtDinero);
+        }
+
+        void bind(Transacciones transacciones) {
+            precio.setText(transacciones.getDinero().toString());
+            producto.setText(transacciones.getProducto());
+            fecha.setText(transacciones.getFecha());
+            lugar.setText(transacciones.getLugar());
         }
     }
 }
