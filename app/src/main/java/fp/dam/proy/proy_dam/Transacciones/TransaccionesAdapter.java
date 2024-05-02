@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.AdapterClass;
+package fp.dam.proy.proy_dam.Transacciones;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import fp.dam.proy.proy_dam.Class.Transacciones;
 import fp.dam.proy.proy_dam.R;
 
 public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdapter.ViewHolder> {
 
     List<Transacciones> modeList;
 
-    public TransaccionesAdapter(List<Transacciones> lista) {
-        modeList = lista;
+    public TransaccionesAdapter(List<Transacciones> modelist) {
+        this.modeList = modelist;
     }
 
 
@@ -32,13 +31,6 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(modeList.get(position));
-        /*
-        Transacciones tr = modeList.get(position);
-        holder.fecha.setText(tr.getFecha().toDate().toString());
-        holder.lugar.setText(tr.getLugar());
-        holder.producto.setText(tr.getProducto());
-        holder.precio.setText(tr.getDinero().toString());
-         */
     }
 
     @Override
@@ -47,10 +39,7 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView fecha;
-        private final TextView lugar;
-        private final TextView producto;
-        private final TextView precio;
+        private final TextView fecha, lugar, producto, precio;
 
         public ViewHolder(View v) {
             super (v);
@@ -63,7 +52,7 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
         void bind(Transacciones transacciones) {
             precio.setText(transacciones.getDinero().toString());
             producto.setText(transacciones.getProducto());
-            fecha.setText(transacciones.getFecha());
+            fecha.setText(transacciones.getFechaFormated());
             lugar.setText(transacciones.getLugar());
         }
     }

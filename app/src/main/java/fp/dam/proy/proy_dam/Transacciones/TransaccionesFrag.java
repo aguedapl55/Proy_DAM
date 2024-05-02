@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam;
+package fp.dam.proy.proy_dam.Transacciones;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,18 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import fp.dam.proy.proy_dam.Class.Transacciones;
-import fp.dam.proy.proy_dam.AdapterClass.TransaccionesAdapter;
+import fp.dam.proy.proy_dam.AddTransaccionActivity;
+import fp.dam.proy.proy_dam.R;
 
 public class TransaccionesFrag extends Fragment {
     private String email;
@@ -48,8 +46,7 @@ public class TransaccionesFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         transacciones = new ArrayList<>();
-        Bundle b = getArguments();
-        email = b.getString("email");
+        email = getArguments().getString("email");
         db = FirebaseFirestore.getInstance();
     }
 

@@ -17,6 +17,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 
+import fp.dam.proy.proy_dam.Categorias.CategoriasFrag;
+import fp.dam.proy.proy_dam.Cuentas.CuentasFrag;
+import fp.dam.proy.proy_dam.Transacciones.TransaccionesFrag;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();

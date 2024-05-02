@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navCuentas"
-        android:icon="@drawable/credit_card_svgrepo_com"
+        android:icon="@drawable/credit_card"
         android:title="@string/cuentas"
         />
     <item
@@ -23,7 +23,7 @@
     <!--
     <item
         android:id="@+id/navAjustes"
-        android:icon="@drawable/settings_svgrepo_com"
+        android:icon="@drawable/settings"
         android:title="@string/ajustes"
         />
         -->

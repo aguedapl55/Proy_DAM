@@ -25,13 +25,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/settings_svgrepo_com"
+            app:srcCompat="@drawable/settings"
             android:scaleType="fitCenter"
             android:background="@null"
             />
 
         <TextView
             android:id="@+id/textView"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -47,7 +48,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/add_svgrepo_com"
+            app:srcCompat="@drawable/add"
             android:scaleType="fitCenter"
              android:background="@null"
             />
@@ -72,7 +73,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:layout_marginTop="10dp"
         android:id="@+id/fragment_container"
-        android:name="fp.dam.proy.proy_dam.CuentasFrag"
+        android:name="fp.dam.proy.proy_dam.Cuentas.CuentasFrag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"

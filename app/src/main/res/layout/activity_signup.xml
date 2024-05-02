@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="15dp"
-        app:srcCompat="@drawable/back_svgrepo_com"
+        app:srcCompat="@drawable/arrow_back"
         android:scaleType="fitCenter"
         android:background="@null"
         android:onClick="goto_login"

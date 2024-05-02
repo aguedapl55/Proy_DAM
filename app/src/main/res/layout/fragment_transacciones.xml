@@ -5,27 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TransaccionesFrag">
+    tools:context=".Transacciones.TransaccionesFrag">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="15dp"
         android:id="@+id/transRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <Button
+    <ImageButton
         android:id="@+id/transAddTransaccion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/trans_addTrans"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@drawable/add"
+
         android:onClick="goto_AddTransaccion"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="25dp"
+        android:layout_margin="25dp"
+        android:background="@null"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
