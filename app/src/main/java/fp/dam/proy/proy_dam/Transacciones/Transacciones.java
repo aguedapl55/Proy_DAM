@@ -6,35 +6,32 @@ import java.text.SimpleDateFormat;
 
 public class Transacciones {
     Double dinero;
-    String producto, lugar, categoria, cuenta;
+    String comentario, categoria, cuenta;
     Timestamp fecha;
 
+    /*
     public Transacciones(Double dinero, String producto, String lugar, Timestamp fecha) {
         this.dinero = dinero;
         this.producto = producto;
         this.lugar = lugar;
         this.fecha = fecha;
     }
+     */
 
-    public Transacciones(Double dinero, String producto, String lugar, Timestamp fecha, String categoria, String cuenta) {
+    public Transacciones(Double dinero, Timestamp fecha, String categoria, String cuenta, String comentario) {
         this.dinero = dinero;
-        this.producto = producto;
-        this.lugar = lugar;
         this.fecha = fecha;
         this.categoria = categoria;
         this.cuenta = cuenta;
+        this.comentario = comentario;
     }
 
     public Double getDinero() {
         return dinero;
     }
 
-    public String getProducto() {
-        return producto;
-    }
-
-    public String getLugar() {
-        return lugar;
+    public String getComentario() {
+        return comentario;
     }
 
     public String getFechaFormated() {

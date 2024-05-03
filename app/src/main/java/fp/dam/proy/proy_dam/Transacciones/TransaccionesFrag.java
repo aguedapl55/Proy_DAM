@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import fp.dam.proy.proy_dam.AddTransaccionActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class TransaccionesFrag extends Fragment {
@@ -48,6 +47,9 @@ public class TransaccionesFrag extends Fragment {
         transacciones = new ArrayList<>();
         email = getArguments().getString("email");
         db = FirebaseFirestore.getInstance();
+        try {
+            rv.getAdapter().notifyDataSetChanged();
+        } catch (NullPointerException e) {}
     }
 
     @Override
@@ -74,15 +76,16 @@ public class TransaccionesFrag extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("dinero")) {
                                     Double dinero = document.getDouble("dinero");
-                                    String prod = document.getString("producto");
-                                    String lugar = document.getString("lugar");
+                                    String categoria = document.getString("categoria");
+                                    String cuenta = document.getString("cuenta");
                                     Timestamp fecha = document.getTimestamp("fecha");
-                                    Transacciones trans = new Transacciones(dinero, prod, lugar, fecha);
+                                    String comentario = document.getString("comentario");
+                                    Transacciones trans = new Transacciones(dinero, fecha, categoria, cuenta, comentario); //dinero, fecha, categoria, cuenta
                                     /*
                                     Transacciones trans = new Transacciones(
                                             document.getDouble("dinero"),
                                             document.getString("producto"),
-                                            document.getString("lugar"),
+                                            document.getString("cuenta"),
                                             document.getTimestamp("fecha"));
                                      */
                                     transacciones.add(trans);

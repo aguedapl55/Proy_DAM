@@ -1,61 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/transRV_LL"
+    android:layout_marginBottom="8dp"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/transRV_dinprod"
+    <TextView
+        android:id="@+id/transRV_TxtDinero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        >
+        android:ems="5"
+        android:textSize="20sp"
+        android:text="DINERO"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="5dp"
+        />
 
-            <TextView
-                android:id="@+id/transRV_TxtDinero"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/transRV_TxtProd"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/transRV_TxtProd"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/transRV_TxtDinero"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/transRV_fchlug"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/transRV_contentLL"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/transRV_TxtFecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/transRV_TxtLugar"
-                />
+        <TextView
+            android:id="@+id/transRV_TxtCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CATEGORIA"
+            />
 
-            <TextView
-                android:id="@+id/transRV_TxtLugar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/transRV_TxtFecha"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+        <TextView
+            android:id="@+id/transRV_TxtCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CUENTA"
+            />
+        <TextView
+            android:id="@+id/transRV_TxtComentario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="COMENTARIO"
+            />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </LinearLayout>
+

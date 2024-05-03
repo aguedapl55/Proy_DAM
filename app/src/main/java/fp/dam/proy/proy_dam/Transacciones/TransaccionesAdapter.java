@@ -39,21 +39,21 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView fecha, lugar, producto, precio;
+        private final TextView dinero, categoria, cuenta, comentario;
 
         public ViewHolder(View v) {
             super (v);
-            fecha = v.findViewById(R.id.transRV_TxtFecha);
-            lugar = v.findViewById(R.id.transRV_TxtLugar);
-            producto = v.findViewById(R.id.transRV_TxtProd);
-            precio = v.findViewById(R.id.transRV_TxtDinero);
+            dinero = v.findViewById(R.id.transRV_TxtDinero);
+            categoria = v.findViewById(R.id.transRV_TxtCategoria);
+            cuenta = v.findViewById(R.id.transRV_TxtCuenta);
+            comentario = v.findViewById(R.id.transRV_TxtComentario);
         }
 
         void bind(Transacciones transacciones) {
-            precio.setText(transacciones.getDinero().toString());
-            producto.setText(transacciones.getProducto());
-            fecha.setText(transacciones.getFechaFormated());
-            lugar.setText(transacciones.getLugar());
+            dinero.setText(transacciones.getDinero().toString());
+            categoria.setText(transacciones.getCategoria());
+            cuenta.setText(transacciones.getCuenta());
+            comentario.setText(transacciones.getComentario());
         }
     }
 }

@@ -1,11 +1,13 @@
 package fp.dam.proy.proy_dam;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -17,15 +19,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
 
+import fp.dam.proy.proy_dam.Categorias.AddCategoriaActivity;
 import fp.dam.proy.proy_dam.Categorias.CategoriasFrag;
+import fp.dam.proy.proy_dam.Cuentas.AddCuentaActivity;
 import fp.dam.proy.proy_dam.Cuentas.CuentasFrag;
+import fp.dam.proy.proy_dam.Transacciones.AddTransaccionActivity;
 import fp.dam.proy.proy_dam.Transacciones.TransaccionesFrag;
 
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String email;
-
+    NavigationBarView nav;
     CuentasFrag cuentasFrag = new CuentasFrag();
     CategoriasFrag catFrag = new CategoriasFrag();
     TransaccionesFrag transFrag = new TransaccionesFrag();
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         email = getIntent().getExtras().getString("email");
         //db.collection(email);
 
-        NavigationBarView nav = findViewById(R.id.bottom_nav);
+        nav = findViewById(R.id.bottom_nav);
         nav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             return selectFragment(itemId);
@@ -49,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             selectFragment(itemId);
         });
 
-        ImageButton ajustesBtn = findViewById(R.id.settingsBut);
+        ImageButton ajustesBtn = findViewById(R.id.addBut);
         ajustesBtn.setOnClickListener(v -> {
             Intent i = new Intent(MainActivity.this, AjustesScreen.class);
             startActivity(i);
@@ -97,6 +102,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void goto_AddTransaccion(View v) {
         Intent i = new Intent(this, AddTransaccionActivity.class);
+        i.putExtra("email", email);
+        startActivity(i);
+    }
+
+    public void goto_AddSmth(View v) {
+        Activity clase = null;
+        int itemId = nav.getSelectedItemId();
+        if (itemId == R.id.navCuentas) {
+            clase = new AddCuentaActivity();
+        } else if (itemId == R.id.navCategorias) {
+            clase = new AddCategoriaActivity();
+        } else if (itemId == R.id.navTransacciones) {
+            clase = new AddTransaccionActivity();
+        } else if (itemId == R.id.navEstadisticas) {
+            Toast.makeText(this, "no se puede añadir estadisticas aun", Toast.LENGTH_SHORT);
+        }
+        Intent i = new Intent(this, clase.getClass());
+        startActivity(i);
+
+    }
+
+    public void goto_Settings(View v) {
+        Intent i = new Intent(this, AjustesScreen.class);
+        i.putExtra("email", email);
         startActivity(i);
     }
 

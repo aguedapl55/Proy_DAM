@@ -13,7 +13,13 @@
         android:theme="@style/Theme.Proy_DAM"
         tools:targetApi="31">
         <activity
-            android:name=".AddTransaccionActivity"
+            android:name=".Categorias.AddCategoriaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Cuentas.AddCuentaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Transacciones.AddTransaccionActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -32,7 +38,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

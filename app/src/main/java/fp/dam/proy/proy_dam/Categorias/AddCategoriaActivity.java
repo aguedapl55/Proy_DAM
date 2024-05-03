@@ -1,14 +1,16 @@
-package fp.dam.proy.proy_dam;
+package fp.dam.proy.proy_dam.Categorias;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class AddTransaccionActivity extends AppCompatActivity {
+import fp.dam.proy.proy_dam.R;
+
+public class AddCategoriaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_transaccion);
+        setContentView(R.layout.activity_add_categoria);
     }
 }

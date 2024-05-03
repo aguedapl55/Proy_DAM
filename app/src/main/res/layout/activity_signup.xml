@@ -17,6 +17,7 @@
         android:scaleType="fitCenter"
         android:background="@null"
         android:onClick="goto_login"
+        android:contentDescription="@string/Back_Arrow"
         />
 
     <EditText
@@ -27,7 +28,7 @@
         android:ems="10"
         android:hint="@string/loginUserHint"
         android:autofillHints=""
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

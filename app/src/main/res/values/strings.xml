@@ -18,5 +18,17 @@
     <!--SIGN UP-->
     <string name="signupRegister">Crear cuenta</string>
     <string name="signupPasswordRepeat">Repetir Contraseña</string>
+    <string name="title_activity_add_cuenta">AddCuenta</string>
+
+    <!--CONTENT DESCRIPTORS-->
+    <string name="Check">Confirmar</string>
+    <string name="Back_Arrow">Ir atrás</string>
+    <string name="add_element">Añadir elemento</string>
+    <string name="trans_NuevaTransaccion">NUEVA TRANSACCION</string>
+    <string name="categoria">Categoria</string>
+    <string name="cuenta">Cuenta</string>
+    <string name="dinero">Dinero</string>
+    <string name="fecha">Fecha</string>
+    <string name="comentario_opcional">Comentario (opcional)</string>
 
 </resources>
