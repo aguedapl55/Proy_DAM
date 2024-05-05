@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-
+<!--
     <ImageButton
         android:id="@+id/transAddTransaccion"
         android:layout_width="55dp"
@@ -29,5 +29,6 @@
         android:background="@null"
         android:contentDescription="@string/add_element"
         />
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

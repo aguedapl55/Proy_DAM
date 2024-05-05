@@ -1,14 +1,14 @@
-package fp.dam.proy.proy_dam.Categorias;
+package fp.dam.proy.proy_dam.CategoriasCuentas;
 
-public class Categorias {
+public class CategoriasCuentas {
     String nombre, icon;
     //int icon;
-    double dinero, budget;
+    double gastos, budget;
 
-    public Categorias(String nombre, String icon, double gastos, double budget) {
+    public CategoriasCuentas(String nombre, String icon, double gastos, double budget) {
         this.nombre = nombre;
         this.icon = icon;
-        this.dinero = gastos;
+        this.gastos = gastos;
         this.budget = budget;
     }
 
@@ -20,8 +20,8 @@ public class Categorias {
         return icon;
     }
 
-    public double getDinero() {
-        return dinero;
+    public double getGastos() {
+        return gastos;
     }
 
     public double getBudget() {

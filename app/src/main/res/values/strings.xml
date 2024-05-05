@@ -30,5 +30,7 @@
     <string name="dinero">Dinero</string>
     <string name="fecha">Fecha</string>
     <string name="comentario_opcional">Comentario (opcional)</string>
+    <string name="addcta_NuevaCuenta">NUEVA CUENTA</string>
+    <string name="addcat_NuevaCategoria">NUEVA CATEGORIA</string>
 
 </resources>

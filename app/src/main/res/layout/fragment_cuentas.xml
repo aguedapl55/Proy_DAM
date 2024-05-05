@@ -5,24 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Cuentas.CuentasFrag">
+    tools:context=".Categorias.CategoriasFrag">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_margin="15dp"
+        android:id="@+id/ctaRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TEXTO ARRIBA"
-        android:textAlignment="center"
-        android:textSize="20sp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TEXTO ABAJO"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

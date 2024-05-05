@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -36,7 +37,7 @@ public class TransaccionesFrag extends Fragment {
     public static TransaccionesFrag newInstance(String email) {
         TransaccionesFrag fragment = new TransaccionesFrag();
         Bundle args = new Bundle();
-        args.putString("email", email);
+        args.putString("email", "email");
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,9 +46,9 @@ public class TransaccionesFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         transacciones = new ArrayList<>();
-        email = getArguments().getString("email");
         db = FirebaseFirestore.getInstance();
         try {
+            email = getArguments().getString("email");
             rv.getAdapter().notifyDataSetChanged();
         } catch (NullPointerException e) {}
     }
@@ -66,7 +67,7 @@ public class TransaccionesFrag extends Fragment {
 
     private void rellenarRV(@NonNull RecyclerView rv) {
         transacciones = new ArrayList<>();
-        db.collection("users").document(email.toString()).collection("transacciones")
+        db.collection("users").document(email.toString()).collection("transacciones").orderBy("fecha", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -75,19 +76,12 @@ public class TransaccionesFrag extends Fragment {
                             Log.wtf("TAMAÑO TASK", "" + task.getResult().size());
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("dinero")) {
-                                    Double dinero = document.getDouble("dinero");
-                                    String categoria = document.getString("categoria");
-                                    String cuenta = document.getString("cuenta");
-                                    Timestamp fecha = document.getTimestamp("fecha");
-                                    String comentario = document.getString("comentario");
-                                    Transacciones trans = new Transacciones(dinero, fecha, categoria, cuenta, comentario); //dinero, fecha, categoria, cuenta
-                                    /*
                                     Transacciones trans = new Transacciones(
                                             document.getDouble("dinero"),
-                                            document.getString("producto"),
+                                            document.getTimestamp("fecha"),
+                                            document.getString("categoria"),
                                             document.getString("cuenta"),
-                                            document.getTimestamp("fecha"));
-                                     */
+                                            document.getString("comentario"));
                                     transacciones.add(trans);
                                     Log.wtf("AÑADIDO", document.getId() + " => " + document.getData());
                                 } else
@@ -99,9 +93,7 @@ public class TransaccionesFrag extends Fragment {
                         }
                     }
                 });
-        Timestamp now = new Timestamp(new Date(124, 0, 27)); //meses empiezan en 0, años empiezan en 1900
-        //Transacciones prueba = new Transacciones(0.0, "NADA", "aqui", now);
-        //transacciones.add(prueba);
+        //Timestamp now = new Timestamp(new Date(124, 0, 27)); //meses empiezan en 0, años empiezan en 1900
     }
 
     public void goto_AddTransaccion(View view) {

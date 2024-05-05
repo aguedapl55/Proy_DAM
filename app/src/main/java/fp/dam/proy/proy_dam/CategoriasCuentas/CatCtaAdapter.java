@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Categorias;
+package fp.dam.proy.proy_dam.CategoriasCuentas;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +13,23 @@ import java.util.List;
 
 import fp.dam.proy.proy_dam.R;
 
-public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.ViewHolder> {
+public class CatCtaAdapter extends RecyclerView.Adapter<CatCtaAdapter.ViewHolder> {
 
-    List<Categorias> modeList;
+    List<CategoriasCuentas> modeList;
 
-    public CategoriasAdapter(List<Categorias> modeList) {
+    public CatCtaAdapter(List<CategoriasCuentas> modeList) {
         this.modeList = modeList;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvrow_categorias, parent, false);
-        return new ViewHolder(v);
+    public CatCtaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rvrow_catcta, parent, false);
+        return new CatCtaAdapter.ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CatCtaAdapter.ViewHolder holder, int position) {
         holder.bind(modeList.get(position));
     }
 
@@ -49,10 +49,10 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Vi
             dinero = v.findViewById(R.id.ccRV_dinero);
         }
 
-        void bind(Categorias categorias) {
-            nombre.setText(categorias.getNombre());
-            icon.setImageResource(icon.getResources().getIdentifier(categorias.getIcon(), "drawable", icon.getContext().getPackageName()));
-            dinero.setText(categorias.getDinero() + " / " + categorias.getBudget());
+        void bind(CategoriasCuentas catctas) {
+            nombre.setText(catctas.getNombre());
+            icon.setImageResource(icon.getResources().getIdentifier(catctas.getIcon(), "drawable", icon.getContext().getPackageName()));
+            dinero.setText(catctas.getGastos() + " / " + catctas.getBudget());
         }
     }
 }

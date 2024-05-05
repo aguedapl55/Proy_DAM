@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -67,16 +68,14 @@ public class AddTransaccionActivity extends AppCompatActivity {
         String comentario, categoria, cuenta;
         Timestamp fecha;
         try {
-            // Map<String, Object> transaccion = new HashMap<>();
             dinero = Double.parseDouble(prcText.getText().toString());
+            dinero = BigDecimal.valueOf(dinero).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //formating
             categoria = catText.getText().toString();
             cuenta = ctaText.getText().toString();
             fecha = new Timestamp(calendario.getTime());
-            try {
-                comentario = comText.getText().toString();
-            } catch (IllegalStateException | IllegalArgumentException e) {
-                comentario = "";
-            }
+            comentario = comText.getText().toString();
+            if (dinero.isNaN() || categoria.isBlank() || cuenta.isBlank())
+                throw new IllegalArgumentException();
             Transacciones transaccion = new Transacciones(dinero, fecha, categoria, cuenta, comentario);
             db.collection("users").document(email).collection("transacciones").add(transaccion).addOnCompleteListener(task -> {
                 if (task.isSuccessful())
