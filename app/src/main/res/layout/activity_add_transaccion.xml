@@ -30,6 +30,7 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:onClick="goto_MainActivity"
+            android:contentDescription="@string/Back_Arrow"
             />
 
         <TextView
@@ -58,29 +59,25 @@
 
     </LinearLayout>
 
-    <EditText
+    <Spinner
         android:id="@+id/addtrans_categoria"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/categoria"
+        android:layout_width="95pt"
+        android:layout_height="20pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addcat_linlayout"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="100dp"
+        android:spinnerMode="dropdown"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/addtrans_cuenta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/cuenta"
+        android:layout_width="95pt"
+        android:layout_height="20pt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addtrans_categoria"
-        android:layout_marginTop="25dp"/>
+        android:layout_marginTop="25dp"
+        android:spinnerMode="dropdown"/>
 
     <EditText
         android:id="@+id/addtrans_dinero"
@@ -130,6 +127,5 @@
         app:layout_constraintTop_toBottomOf="@+id/addtrans_fecha"
         android:layout_marginTop="25dp"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

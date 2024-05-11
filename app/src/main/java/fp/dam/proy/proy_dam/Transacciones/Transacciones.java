@@ -41,4 +41,25 @@ public class Transacciones {
     public String getCuenta() {
         return cuenta;
     }
+
+    public void setDinero(Double dinero) {
+        this.dinero = dinero;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public void setFecha(Timestamp fecha) {
+        this.fecha = fecha;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
+    }
+
 }

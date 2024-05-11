@@ -49,19 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         TextView placeholder = findViewById(R.id.addcat_textview);
         placeholder.setText(email);
-        /*
-        DocumentReference docRef = db.collection("users").document(email);
-        Source source = Source.DEFAULT;
-        docRef.get(source).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                Log.d("sos", "Cached document data: " + document.getData());
-                placeholder.setText(email);
-            } else {
-                Log.d("sos", "Cached get failed: ", task.getException());
-            }
-        });
-         */
     }
 
     public boolean selectFragment(int itemId) {
