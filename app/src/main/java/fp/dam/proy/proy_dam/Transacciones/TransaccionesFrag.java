@@ -56,12 +56,14 @@ public class TransaccionesFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_transacciones, container, false);
-        rv = rootView.findViewById(R.id.transRecyclerView);
-        rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        rellenarRV(rv);
-        TransaccionesAdapter adapter = new TransaccionesAdapter(transacciones);
-        adapter.notifyDataSetChanged();
-        rv.setAdapter(adapter);
+        try {
+            rv = rootView.findViewById(R.id.transRecyclerView);
+            rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
+            rellenarRV(rv);
+            TransaccionesAdapter adapter = new TransaccionesAdapter(transacciones);
+            adapter.notifyDataSetChanged();
+            rv.setAdapter(adapter);
+        } catch (NullPointerException e) {}
         return rootView;
     }
 

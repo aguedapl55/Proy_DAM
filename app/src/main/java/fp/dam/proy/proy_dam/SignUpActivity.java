@@ -9,15 +9,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
+
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput, passConfInput;
-    private String email, password, passwordC;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,8 @@ public class SignUpActivity extends AppCompatActivity {
     public void signup(View v) {
         try {
             email = emailInput.getText().toString();
-            password = passwordInput.getText().toString();
-            passwordC = passConfInput.getText().toString();
+            String password = passwordInput.getText().toString();
+            String passwordC = passConfInput.getText().toString();
             if (password.equals(passwordC)) {
                 FirebaseAuth fbAuth = FirebaseAuth.getInstance();
                 fbAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
@@ -62,8 +65,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void configNewUser(FirebaseFirestore db) {
         Map<String, Object> base = new HashMap<>();
+        DocumentReference usuario = db.collection("users").document(email);
         base.put("email", email);
-        db.collection("users").document(email).set(base).addOnCompleteListener(task -> {
+        usuario.set(base).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "OLEEEEEEE", Toast.LENGTH_SHORT).show();
             } else {
@@ -72,20 +76,24 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         Map<String, Object> params = new HashMap<>();
-        //TODO sustituir por parametros reales
-        db.collection("users").document(email).collection("parametros").add(params);
+        params.put("language", "es");
+        params.put("theme", "light");
+        usuario.collection("parametros").add(params);
 
-        Map<String, Object> categorias = new HashMap<>();
-        //TODO sustituir por categorias reales
-        db.collection("users").document(email).collection("categorias").add(categorias);
+        usuario.collection("categorias").add(new CategoriasCuentas("food", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("entertainment", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("transport", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("health", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("pets", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("family", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("clothes", "", 0, 0));
+        //usuario.collection("categorias").add(new CategoriasCuentas("", "", 0, 0));
 
         Map<String, Object> transacciones = new HashMap<>();
-        //TODO
-        db.collection("users").document(email).collection("transacciones").add(transacciones);
+        usuario.collection("transacciones").add(transacciones);
 
-        Map<String, Object> cuentas = new HashMap<>();
-        //TODO sustituir por cuentas reales
-        db.collection("users").document(email).collection("cuentas").add(cuentas);
+        usuario.collection("cuentas").add(new CategoriasCuentas("debit card", "credit_card", 0, 0));
+        usuario.collection("cuentas").add(new CategoriasCuentas("cash", "wallet", 0, 0));
 
         /*
         Map<String, Object> controlParental = new HashMap<>();
@@ -95,9 +103,9 @@ public class SignUpActivity extends AppCompatActivity {
                 .collection("controlParental").document("message1");
          */
 
-        Map<String, Object> budgets = new HashMap<>();
-        //budgets.put("budgets", "budgets"); //TODO resolver problema "no puede haber col con 0 docs"
-        db.collection("users").document(email).collection("budgets").add(budgets);
+        //Map<String, Object> budgets = new HashMap<>();
+        //budgets.put("budgets", "budgets");
+        //db.collection("users").document(email).collection("budgets").add(budgets);
     }
 
     public void goto_login(View view) {

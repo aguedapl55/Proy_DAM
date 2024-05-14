@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         email = getIntent().getExtras().getString("email");
-        //db.collection(email);
 
         nav = findViewById(R.id.bottom_nav);
         nav.setOnItemSelectedListener(item -> {
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             selectFragment(itemId);
         });
+        nav.setSelectedItemId(R.id.navTransacciones);
 
         TextView placeholder = findViewById(R.id.addcat_textview);
         placeholder.setText(email);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goto_AddSmth(View v) {
-        Activity clase = null;
+        Activity clase = new Activity();
         boolean existeClase = true;
         int itemId = nav.getSelectedItemId();
         if (itemId == R.id.navCuentas) {

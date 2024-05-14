@@ -59,7 +59,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:layout_marginTop="10dp"
         android:id="@+id/fragment_container"
-        android:name="fp.dam.proy.proy_dam.EstadisticasFrag"
+        android:name="fp.dam.proy.proy_dam.Transacciones.TransaccionesFrag"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"

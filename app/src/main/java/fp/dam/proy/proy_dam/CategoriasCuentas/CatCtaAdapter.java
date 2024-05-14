@@ -52,7 +52,12 @@ public class CatCtaAdapter extends RecyclerView.Adapter<CatCtaAdapter.ViewHolder
         void bind(CategoriasCuentas catctas) {
             nombre.setText(catctas.getNombre());
             icon.setImageResource(icon.getResources().getIdentifier(catctas.getIcon(), "drawable", icon.getContext().getPackageName()));
-            dinero.setText(catctas.getGastos() + " / " + catctas.getBudget());
+            if (catctas.getBudget() == 0) {
+                dinero.setText(String.valueOf(catctas.getGastos()));
+            } else {
+                String s = catctas.getGastos() + " / " + catctas.getBudget();
+                dinero.setText(s);
+            }
         }
     }
 }
