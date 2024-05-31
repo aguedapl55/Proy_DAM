@@ -60,10 +60,72 @@ public class EstadisticasFrag extends Fragment {
         dineroMonth = rootView.findViewById(R.id.statsBCDineroMonth);
         dineroCategorias = rootView.findViewById(R.id.statsBCDineroCat);
         dineroCuentas = rootView.findViewById(R.id.statsBCDineroCta);
+
+        Query dinMonthRef = db.collection("users").document(email).collection("transacciones").orderBy("fecha", Query.Direction.DESCENDING);
+        //rellenarStats(dineroMonth, );
+
         rellenarStatsMonth();
         rellenarStatsCategorias();
         rellenarStatsCuentas();
         return rootView;
+    }
+
+    private void rellenarStats(Query query, BarChart barChart) {
+        List<BarEntry> entries = new ArrayList<>();
+        List<Float> floats = new ArrayList<>();
+
+        List<Transacciones> transacciones = new ArrayList<>();
+        List<CategoriasCuentas> categoriasCuentas = new ArrayList<>();
+
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                int iteraciones = 0;
+                boolean esTrans = task.getResult().getDocuments().get(0).contains("dinero");
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    if (esTrans) { //Transacciones
+                        //Transacciones trans = document.toObject(Transacciones.class);
+                        transacciones.add(document.toObject(Transacciones.class));
+                        /*
+                        transacciones.add(new Transacciones(
+                                document.getDouble("dinero"),
+                                document.getTimestamp("fecha"),
+                                document.getString("nombre"),
+                                document.getString("cuenta"),
+                                document.getString("comentario")
+                        ));
+                         */
+                    } else { //CategoriasCuentas
+                        categoriasCuentas.add(document.toObject(CategoriasCuentas.class));
+                        /*
+                        categoriasCuentas.add(new CategoriasCuentas(
+                                document.getString("nombre"),
+                                document.getString("icon"),
+                                document.getDouble("gastos"),
+                                document.getDouble("budget")
+                        ));
+                         */
+                    }
+                    if (iteraciones++ >= 10) break;
+                }
+                if (esTrans) { //Transacciones
+                    transacciones.forEach(t -> floats.add(Float.parseFloat(String.valueOf(t.getDinero()))));
+                    for (int i = 0; i < transacciones.size(); i++)
+                        entries.add(new BarEntry(i, floats.get(i)));
+                }
+                else { //CategoriasCuentas
+                    categoriasCuentas.forEach(cc -> floats.add(Float.parseFloat(String.valueOf(cc.getGastos()))));
+                    for (int i = 0; i < categoriasCuentas.size(); i++)
+                        entries.add(new BarEntry(i, floats.get(i)));
+                }
+
+                BarDataSet set = new BarDataSet(entries, "BarDataSet");
+                BarData data = new BarData(set);
+                data.setBarWidth(0.9f); // set custom bar width
+                barChart.setData(data);
+                barChart.setFitBars(true); // make the x-axis fit exactly all bars
+                barChart.invalidate(); // refresh
+            }
+        });
     }
 
     private void rellenarStatsMonth() {
@@ -73,27 +135,21 @@ public class EstadisticasFrag extends Fragment {
 
         db.collection("users").document(email).collection("transacciones").orderBy("fecha", Query.Direction.DESCENDING)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() { //TODO maybe reemplazar por lambda?
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
                             int iteraciones = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Transacciones t = new Transacciones(
-                                        document.getDouble("dinero"),
-                                        document.getTimestamp("fecha"),
-                                        document.getString("nombre"),
-                                        document.getString("cuenta"),
-                                        ""
-                                );
+                                Transacciones t = document.toObject(Transacciones.class);
                                 trans.add(t);
                                 if (iteraciones >= 10)
                                     break;
                                 iteraciones++;
                             }
 
-                            trans.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getDinero()))));
+                            trans.forEach(t -> floats.add(Float.parseFloat(String.valueOf(t.getDinero()))));
                             for (int i = 0; i<trans.size(); i++)
                                 entries.add(new BarEntry(i, floats.get(i)));
 
@@ -125,9 +181,9 @@ public class EstadisticasFrag extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CategoriasCuentas c = new CategoriasCuentas(
                                         document.getString("nombre"),
-                                        "",
+                                        document.getString("icon"),
                                         document.getDouble("gastos"),
-                                        0.0
+                                        document.getDouble("budget")
                                 );
                                 categorias.add(c);
                                 if (iteraciones >= 10)

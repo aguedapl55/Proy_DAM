@@ -12,17 +12,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.common.primitives.Chars;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import fp.dam.proy.proy_dam.R;
@@ -33,11 +41,11 @@ public class AddTransaccionActivity extends AppCompatActivity {
     FirebaseFirestore db;
     Calendar calendario;
     private Spinner catSpin, ctaSpin;
-    private EditText /*catText, ctaText,*/ lugText, comText, prcText;
-    //private EditText fchText;
+    private EditText lugText, comText, prcText;
     private TextView fchText;
 
-    private List<String> categorias, cuentas;
+    private ArrayList<String> categorias, cuentas;
+    private List<String> catAux, ctaAux;
     String categoria, cuenta;
 
     @Override
@@ -47,12 +55,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
 
         email = getIntent().getExtras().getString("email");
         db = FirebaseFirestore.getInstance();
-        setup();
-
-        catSpin = findViewById(R.id.addtrans_categoria);
-        ctaSpin = findViewById(R.id.addtrans_cuenta);
-        //catText = findViewById(R.id.addtrans_categoria);
-        //ctaText = findViewById(R.id.addtrans_cuenta);
+        spinnerSetup();
         comText = findViewById(R.id.addtrans_comentario);
         fchText = findViewById(R.id.addtrans_fecha);
         prcText = findViewById(R.id.addtrans_dinero);
@@ -62,31 +65,6 @@ public class AddTransaccionActivity extends AppCompatActivity {
         year = calendario.get(Calendar.YEAR);
         month = calendario.get(Calendar.MONTH);
         day = calendario.get(Calendar.DAY_OF_MONTH);
-
-        catSpin.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorias));
-        catSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoria = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                categoria = "";
-            }
-        });
-        ctaSpin.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, cuentas));
-        ctaSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cuenta = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                cuenta = "";
-            }
-        });
 
         fchText.setOnClickListener(c -> {
             DatePickerDialog dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -99,9 +77,8 @@ public class AddTransaccionActivity extends AppCompatActivity {
             dpd.show();
 
         });
+
     }
-
-
 
     public void confirm(View view) {
         Double dinero;
@@ -112,16 +89,20 @@ public class AddTransaccionActivity extends AppCompatActivity {
             dinero = Double.parseDouble(prcText.getText().toString());
             dinero = BigDecimal.valueOf(dinero).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //formating
             //categoria = catText.getText().toString();
+            String cat = catSpin.getSelectedItem().toString();
+            String cta = ctaSpin.getSelectedItem().toString();
+            categoria = catSpin.getSelectedItem().toString();
+            cuenta = ctaSpin.getSelectedItem().toString();
             //cuenta = ctaText.getText().toString();
             comentario = comText.getText().toString();
             fecha = new Timestamp(calendario.getTime());
-            if (dinero.isNaN() || categoria.isBlank() || cuenta.isBlank())
+            if (dinero.isNaN())
                 throw new IllegalStateException();
-            if (!categorias.contains(categoria) || !cuentas.contains(cuenta)) {
+            if (!categorias.contains(cat) || !cuentas.contains(cta)) {
                 failsCategoria = categorias.contains(categoria) ? false : true;
                 throw new IllegalArgumentException();
             }
-            Transacciones transaccion = new Transacciones(dinero, fecha, categoria, cuenta, comentario);
+            Transacciones transaccion = new Transacciones(dinero, fecha, cat, cta, comentario);
             db.collection("users").document(email).collection("transacciones").add(transaccion).addOnCompleteListener(task -> {
                 if (task.isSuccessful())
                     Toast.makeText(this, "Se ha añadido la transacción", Toast.LENGTH_SHORT).show();
@@ -144,27 +125,70 @@ public class AddTransaccionActivity extends AppCompatActivity {
         finish();
     }
 
-    public void setup() {
+    public void spinnerSetup() {
+        catSpin = findViewById(R.id.addtrans_categoria);
+        ctaSpin = findViewById(R.id.addtrans_cuenta);
+        CollectionReference colRefCat = db.collection("users").document(email).collection("categorias");
+        CollectionReference colRefCta = db.collection("users").document(email).collection("cuentas");
         categorias = new ArrayList<>();
-        db.collection("users").document(email).collection("categorias").get().addOnCompleteListener(task -> {
-            Log.wtf("TAMAÑO TASK", "" + task.getResult().size());
-            for (QueryDocumentSnapshot document : task.getResult()) {
-                if (document.contains("nombre")) {
-                    categorias.add(document.getString("nombre"));
-                } else
-                    Log.wtf("SALTADO", document.getId());
-            }
+        cuentas = new ArrayList<>();
+
+        colRefCat.orderBy("nombre", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    if (document.contains("nombre"))
+                        categorias.add(document.getString("nombre"));
+                    else Log.wtf("SALTADO", document.getId());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorias);
+                adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                catSpin.setAdapter(adapter);
+                catSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        parent.setSelection(position);
+                        categoria = parent.getItemAtPosition(position).toString();
+                        //Toast.makeText(getBaseContext(), "Item seleccionado: " + categoria, Toast.LENGTH_SHORT).show();
+                        Log.wtf("CATEGORIA", categoria);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+
+            } else
+                Log.wtf("ColRefCategorias", "Ha fallado");
         });
 
-        cuentas = new ArrayList<>();
-        db.collection("users").document(email).collection("cuentas").get().addOnCompleteListener(task -> {
-            Log.wtf("TAMAÑO TASK", "" + task.getResult().size());
-            for (QueryDocumentSnapshot document : task.getResult()) {
-                if (document.contains("nombre")) {
-                    cuentas.add(document.getString("nombre"));
-                } else
-                    Log.wtf("SALTADO", document.getId());
-            }
+        colRefCta.orderBy("nombre", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot document : task.getResult()) {
+                    if (document.contains("nombre"))
+                        cuentas.add(document.getString("nombre"));
+                    else Log.wtf("SALTADO", document.getId());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, cuentas);
+                adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+                ctaSpin.setAdapter(adapter);
+                ctaSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        parent.setSelection(position);
+                        categoria = parent.getItemAtPosition(position).toString();
+                        //Toast.makeText(getBaseContext(), "Item seleccionado: " + categoria, Toast.LENGTH_SHORT).show();
+                        Log.wtf("CATEGORIA", categoria);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+
+            } else
+                Log.wtf("ColRefCategorias", "Ha fallado");
         });
+
+        catSpin.setSelection(0);
+        ctaSpin.setSelection(0);
     }
+
 }

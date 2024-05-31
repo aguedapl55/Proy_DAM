@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Calendar;
-
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
 import fp.dam.proy.proy_dam.R;
 
@@ -38,14 +36,14 @@ public class AddCategoriaActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-        Double dinero, budget;
+        Double dinero, budget = 0.0;
         String nombre, icon;
         try {
             dinero = Double.parseDouble(dineroTxt.getText().toString());
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
             icon = iconTxt.getText().toString();
-            if (dinero.isNaN() || budget.isNaN() || nombre.isEmpty() || icon.isEmpty())
+            if (nombre.isEmpty())
                 throw new IllegalArgumentException();
             CategoriasCuentas categoria = new CategoriasCuentas(nombre, icon, dinero, budget);
             db.collection("users").document(email).collection("categorias").add(categoria).addOnCompleteListener(task -> {

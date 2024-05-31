@@ -66,6 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void configNewUser(FirebaseFirestore db) {
         Map<String, Object> base = new HashMap<>();
         DocumentReference usuario = db.collection("users").document(email);
+        usuario.delete();
         base.put("email", email);
         usuario.set(base).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

@@ -5,6 +5,8 @@ public class CategoriasCuentas {
     //int icon;
     double gastos, budget;
 
+    public CategoriasCuentas () {}
+
     public CategoriasCuentas(String nombre, String icon, double gastos, double budget) {
         this.nombre = nombre;
         this.icon = icon;
@@ -26,5 +28,21 @@ public class CategoriasCuentas {
 
     public double getBudget() {
         return budget;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public void setGastos(double gastos) {
+        this.gastos = gastos;
+    }
+
+    public void setBudget(double budget) {
+        this.budget = budget;
     }
 }

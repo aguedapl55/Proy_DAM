@@ -7,6 +7,8 @@ public class Transacciones {
     String comentario, categoria, cuenta;
     Timestamp fecha;
 
+    public Transacciones() {}
+
     public Transacciones(Double dinero, Timestamp fecha, String categoria, String cuenta, String comentario) {
         this.dinero = dinero;
         this.fecha = fecha;

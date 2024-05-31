@@ -23,7 +23,7 @@ import fp.dam.proy.proy_dam.Transacciones.TransaccionesFrag;
 public class MainActivity extends AppCompatActivity {
 
     //FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String email;
+    String email, password;
     NavigationBarView nav;
     CuentasFrag cuentasFrag = new CuentasFrag();
     CategoriasFrag catFrag = new CategoriasFrag();
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         email = getIntent().getExtras().getString("email");
+        password = getIntent().getExtras().getString("password");
 
         nav = findViewById(R.id.bottom_nav);
         nav.setOnItemSelectedListener(item -> {
@@ -101,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
     public void goto_Settings(View v) {
         Intent i = new Intent(this, AjustesScreen.class);
         i.putExtra("email", email);
+        i.putExtra("password", password );
         startActivity(i);
     }
 

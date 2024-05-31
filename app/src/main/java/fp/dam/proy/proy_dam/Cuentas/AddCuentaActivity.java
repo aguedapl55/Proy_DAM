@@ -1,16 +1,13 @@
 package fp.dam.proy.proy_dam.Cuentas;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.appcompat.app.AppCompatActivity;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
 import fp.dam.proy.proy_dam.R;
@@ -38,7 +35,7 @@ public class AddCuentaActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-        Double gastos, budget;
+        Double gastos, budget = 0.0;
         String nombre, icon;
         try {
             gastos = Double.parseDouble(dineroTxt.getText().toString());
@@ -46,7 +43,7 @@ public class AddCuentaActivity extends AppCompatActivity {
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
             icon = iconTxt.getText().toString();
-            if (gastos.isNaN() || budget.isNaN() || nombre.isEmpty() || icon.isEmpty())
+            if (nombre.isEmpty())
                 throw new IllegalArgumentException();
             CategoriasCuentas cuenta = new CategoriasCuentas(nombre, icon, gastos, budget);
             db.collection("users").document(email).collection("cuentas").add(cuenta).addOnCompleteListener(task -> {

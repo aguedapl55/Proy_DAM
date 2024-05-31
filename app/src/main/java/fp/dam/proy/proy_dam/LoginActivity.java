@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     Intent i = new Intent(this, MainActivity.class);
                     i.putExtra("email", email);
+                    i.putExtra("password", password);
                     startActivity(i);
                     finish();
                 }
