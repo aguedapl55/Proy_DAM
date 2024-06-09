@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam;
+package fp.dam.proy.proy_dam.Funcionalidad;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +13,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
+import fp.dam.proy.proy_dam.R;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -33,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void signup(View v) {
         try {
-            email = emailInput.getText().toString();
+            email =  emailInput.getText().toString();
             String password = passwordInput.getText().toString();
             String passwordC = passConfInput.getText().toString();
             if (password.equals(passwordC)) {
@@ -42,8 +44,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if (!task.isSuccessful())
                         Toast.makeText(this, "No se pudo crear el usuario", Toast.LENGTH_SHORT).show();
                 else {
-                    Map<String, Object> newUser = new HashMap<>();
-                    newUser.put("email", email);
+                   /* Map<String, Object> newUser = new HashMap<>();
+                    newUser.put("email", email);*/
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     configNewUser(db);
@@ -52,6 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     Intent i = new Intent(this, MainActivity.class);
                     i.putExtra("email", email);
+                    i.putExtra("usuario", email);
                     startActivity(i);
                     finish();
                 }
@@ -68,6 +71,17 @@ public class SignUpActivity extends AppCompatActivity {
         DocumentReference usuario = db.collection("users").document(email);
         usuario.delete();
         base.put("email", email);
+        base.put("vinculadas", List.of(email));
+        base.put("hijos", List.of());
+        base.put("code", Math.toIntExact((long) Math.floor(Math.random() * 100000))); //codigo de cinco nums para añadir cuenta
+        /*try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(email.getBytes(StandardCharsets.UTF_8));
+            base.put("hash", Base64.getEncoder().encodeToString(md.digest()));
+
+        } catch (Exception e) {
+            Log.wtf("APL FALLO EN CONFIG USER", e.getMessage());
+        }*/
         usuario.set(base).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "OLEEEEEEE", Toast.LENGTH_SHORT).show();
@@ -76,10 +90,14 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+/*
         Map<String, Object> params = new HashMap<>();
         params.put("language", "es");
         params.put("theme", "light");
         usuario.collection("parametros").add(params);
+*/
+
+//        usuario.collection("vinculadas").add(email);
 
         usuario.collection("categorias").add(new CategoriasCuentas("food", "", 0, 0));
         usuario.collection("categorias").add(new CategoriasCuentas("entertainment", "", 0, 0));

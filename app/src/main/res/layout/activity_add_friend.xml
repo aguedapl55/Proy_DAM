@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Transacciones.AddTransaccionActivity">
+    tools:context=".Funcionalidad.AddFriendActivity">
 
     <LinearLayout
         android:id="@+id/addcat_linlayout"
@@ -29,7 +29,7 @@
             app:srcCompat="@drawable/arrow_back"
             android:scaleType="fitCenter"
             android:background="@null"
-            android:onClick="goto_MainActivity"
+            android:onClick="exit"
             android:contentDescription="@string/Back_Arrow"
             />
 
@@ -41,7 +41,7 @@
             android:textSize="25sp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:text="@string/trans_NuevaTransaccion" />
+            android:text="@string/friend_addEmail" />
 
         <ImageButton
             android:id="@+id/addcat_confirm"
@@ -59,74 +59,72 @@
 
     </LinearLayout>
 
-    <Spinner
-        android:id="@+id/addtrans_categoria"
-        android:layout_width="100pt"
-        android:layout_height="20pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addcat_linlayout"
-        android:layout_marginTop="100dp"
-        android:spinnerMode="dropdown"
-        />
-
-    <Spinner
-        android:id="@+id/addtrans_cuenta"
-        android:layout_width="100pt"
-        android:layout_height="20pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addtrans_categoria"
-        android:layout_marginTop="25dp"
-        android:spinnerMode="dropdown"/>
-
     <EditText
-        android:id="@+id/addtrans_dinero"
+        android:id="@+id/friend_inputEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:ems="10"
-        android:hint="@string/dinero"
-        android:inputType="numberSigned|numberDecimal"
+        android:hint="correo@email.com"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addcat_linlayout"
+        android:layout_margin="125dp"
+        />
+
+    <EditText
+        android:id="@+id/friend_inputCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Código (5 numeros)"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/friend_inputEmail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="25dp" />
+
+    <Switch
+        android:id="@+id/friend_switchIsChild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Control parental"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addtrans_cuenta" />
+        app:layout_constraintTop_toBottomOf="@+id/friend_inputCode"
+        android:layout_marginTop="25dp"/>
 
     <TextView
-        android:id="@+id/addtrans_fecha"
+        android:id="@+id/friend_userData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:hint="@string/fecha"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Tus datos:"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addtrans_dinero"
-        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/friend_switchIsChild"
+        android:layout_marginTop="200dp"
         />
-<!--
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:hint="Fecha"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addtrans_dinero" />
--->
 
-    <EditText
-        android:id="@+id/addtrans_comentario"
+    <TextView
+        android:id="@+id/friend_userEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="@string/comentario_opcional"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addtrans_fecha"
-        android:layout_marginTop="25dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/friend_userData"
+        android:layout_marginTop="25dp"/>
+
+    <TextView
+        android:id="@+id/friend_userCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/friend_userEmail"
+        android:layout_marginTop="25dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

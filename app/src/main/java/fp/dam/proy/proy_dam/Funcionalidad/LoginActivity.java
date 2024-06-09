@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam;
+package fp.dam.proy.proy_dam.Funcionalidad;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import fp.dam.proy.proy_dam.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                 else {
                     Intent i = new Intent(this, MainActivity.class);
                     i.putExtra("email", email);
+                    i.putExtra("usuario", email);
                     i.putExtra("password", password);
                     startActivity(i);
                     finish();

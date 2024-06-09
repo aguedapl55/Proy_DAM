@@ -4,19 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
-
-    <ImageButton
-        android:id="@+id/logBtnBack"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="5dp"
-        app:srcCompat="@drawable/arrow_back"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        />
+    tools:context=".Funcionalidad.LoginActivity">
 
     <EditText
         android:id="@+id/logEdtUsuario"

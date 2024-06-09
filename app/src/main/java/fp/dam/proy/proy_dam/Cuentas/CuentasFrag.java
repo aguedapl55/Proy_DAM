@@ -11,12 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +24,18 @@ import fp.dam.proy.proy_dam.R;
 
 public class CuentasFrag extends Fragment {
 
-    private String email;
+    private String email, usuario;
     private FirebaseFirestore db;
     private RecyclerView rv;
     private List<CategoriasCuentas> cuentas;
 
     public CuentasFrag() {}
 
-    public static CuentasFrag newInstance(String email) {
+    public static CuentasFrag newInstance(String email, String usuario) {
         CuentasFrag fragment = new CuentasFrag();
         Bundle args = new Bundle();
         args.putString("email", email);
+        args.putString("usuario", usuario);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +45,7 @@ public class CuentasFrag extends Fragment {
         super.onCreate(savedInstanceState);
         cuentas = new ArrayList<>();
         email = getArguments().getString("email");
+        usuario = getArguments().getString("usuario");
         db = FirebaseFirestore.getInstance();
         try {
             rv.getAdapter().notifyDataSetChanged();
@@ -71,7 +70,7 @@ public class CuentasFrag extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.wtf("TAMAÑO TASK", "" + task.getResult().size());
+                        Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if (document.contains("nombre") && document.contains("icon")) {
                                 CategoriasCuentas cta = new CategoriasCuentas(
@@ -80,13 +79,13 @@ public class CuentasFrag extends Fragment {
                                         document.getDouble("gastos"),
                                         document.getDouble("budget"));
                                 cuentas.add(cta);
-                                Log.wtf("AÑADIDO", document.getId() + " => " + document.getData());
+                                Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
                             } else
-                                Log.wtf("SALTADO", document.getId());
+                                Log.wtf("APL SALTADO", document.getId());
                         }
                         rv.getAdapter().notifyDataSetChanged();
                     } else {
-                        Log.w("TAG", "Error getting documents.", task.getException());
+                        Log.wtf("APL TASK FALLADO", "Error getting documents.", task.getException());
                     }
                 });
     }

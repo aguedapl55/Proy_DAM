@@ -32,5 +32,8 @@
     <string name="comentario_opcional">Comentario (opcional)</string>
     <string name="addcta_NuevaCuenta">NUEVA CUENTA</string>
     <string name="addcat_NuevaCategoria">NUEVA CATEGORIA</string>
+    <string name="sett_addUser">Añadir usuario</string>
+    <string name="sett_addChild">Añadir Hijo</string>
+    <string name="friend_addEmail">AÑADIR EMAIL</string>
 
 </resources>

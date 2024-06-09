@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Funcionalidad.MainActivity">
 
     <LinearLayout
         android:id="@+id/linlayout"
@@ -31,6 +31,15 @@
             android:onClick="goto_Settings"
             />
 
+        <!--<Spinner
+            android:id="@+id/addcat_Spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            />-->
+
         <TextView
             android:id="@+id/addcat_textview"
             android:layout_width="wrap_content"
@@ -51,7 +60,7 @@
             app:srcCompat="@drawable/add"
             android:scaleType="fitCenter"
             android:background="@null"
-            android:onClick="goto_AddSmth"
+            android:onClick="check_AddSmth"
             />
 
     </LinearLayout>

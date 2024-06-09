@@ -75,7 +75,7 @@ public class TransaccionesFrag extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.wtf("TAMAÑO TASK", "" + task.getResult().size());
+                            Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("dinero")) {
                                     Transacciones trans = new Transacciones(
@@ -85,9 +85,9 @@ public class TransaccionesFrag extends Fragment {
                                             document.getString("cuenta"),
                                             document.getString("comentario"));
                                     transacciones.add(trans);
-                                    Log.wtf("AÑADIDO", document.getId() + " => " + document.getData());
+                                    Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
                                 } else
-                                    Log.wtf("SALTADO", document.getId());
+                                    Log.wtf("APL SALTADO", document.getId());
                             }
                             rv.getAdapter().notifyDataSetChanged();
                         } else {

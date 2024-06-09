@@ -138,7 +138,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
                 for (DocumentSnapshot document : task.getResult()) {
                     if (document.contains("nombre"))
                         categorias.add(document.getString("nombre"));
-                    else Log.wtf("SALTADO", document.getId());
+                    else Log.wtf("APL SALTADO", document.getId());
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, categorias);
                 adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
@@ -149,7 +149,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
                         parent.setSelection(position);
                         categoria = parent.getItemAtPosition(position).toString();
                         //Toast.makeText(getBaseContext(), "Item seleccionado: " + categoria, Toast.LENGTH_SHORT).show();
-                        Log.wtf("CATEGORIA", categoria);
+                        Log.wtf("APL CATEGORIA", categoria);
                     }
 
                     @Override
@@ -157,7 +157,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
                 });
 
             } else
-                Log.wtf("ColRefCategorias", "Ha fallado");
+                Log.wtf("APL ColRefCategorias", "Ha fallado");
         });
 
         colRefCta.orderBy("nombre", Query.Direction.DESCENDING).get().addOnCompleteListener(task -> {
@@ -165,7 +165,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
                 for (DocumentSnapshot document : task.getResult()) {
                     if (document.contains("nombre"))
                         cuentas.add(document.getString("nombre"));
-                    else Log.wtf("SALTADO", document.getId());
+                    else Log.wtf("APL SALTADO", document.getId());
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, cuentas);
                 adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
@@ -176,7 +176,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
                         parent.setSelection(position);
                         categoria = parent.getItemAtPosition(position).toString();
                         //Toast.makeText(getBaseContext(), "Item seleccionado: " + categoria, Toast.LENGTH_SHORT).show();
-                        Log.wtf("CATEGORIA", categoria);
+                        Log.wtf("APL CATEGORIA", categoria);
                     }
 
                     @Override
@@ -184,7 +184,7 @@ public class AddTransaccionActivity extends AppCompatActivity {
                 });
 
             } else
-                Log.wtf("ColRefCategorias", "Ha fallado");
+                Log.wtf("APL ColRefCategorias", "Ha fallado");
         });
 
         catSpin.setSelection(0);

@@ -135,33 +135,30 @@ public class EstadisticasFrag extends Fragment {
 
         db.collection("users").document(email).collection("transacciones").orderBy("fecha", Query.Direction.DESCENDING)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() { //TODO maybe reemplazar por lambda?
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
-                            int iteraciones = 0;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Transacciones t = document.toObject(Transacciones.class);
-                                trans.add(t);
-                                if (iteraciones >= 10)
-                                    break;
-                                iteraciones++;
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
+                        int iteraciones = 0;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Transacciones t = document.toObject(Transacciones.class);
+                            trans.add(t);
+                            if (iteraciones >= 10)
+                                break;
+                            iteraciones++;
+                        }
 
-                            trans.forEach(t -> floats.add(Float.parseFloat(String.valueOf(t.getDinero()))));
-                            for (int i = 0; i<trans.size(); i++)
-                                entries.add(new BarEntry(i, floats.get(i)));
+                        trans.forEach(t -> floats.add(Float.parseFloat(String.valueOf(t.getDinero()))));
+                        for (int i = 0; i<trans.size(); i++)
+                            entries.add(new BarEntry(i, floats.get(i)));
 
-                            BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                            BarData data = new BarData(set);
-                            data.setBarWidth(0.9f); // set custom bar width
-                            dineroMonth.setData(data);
-                            dineroMonth.setFitBars(true); // make the x-axis fit exactly all bars
-                            dineroMonth.invalidate(); // refresh
-                        } else
-                            Log.wtf("TASK FAILED", task.getException());
-                    }
+                        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+                        BarData data = new BarData(set);
+                        data.setBarWidth(0.9f); // set custom bar width
+                        dineroMonth.setData(data);
+                        dineroMonth.setFitBars(true); // make the x-axis fit exactly all bars
+                        dineroMonth.invalidate(); // refresh
+                    } else
+                        Log.wtf("APL TASK FAILED", task.getException());
                 });
     }
 
@@ -172,38 +169,35 @@ public class EstadisticasFrag extends Fragment {
 
         db.collection("users").document(email).collection("categorias").orderBy("nombre", Query.Direction.DESCENDING)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
-                            int iteraciones = 0;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CategoriasCuentas c = new CategoriasCuentas(
-                                        document.getString("nombre"),
-                                        document.getString("icon"),
-                                        document.getDouble("gastos"),
-                                        document.getDouble("budget")
-                                );
-                                categorias.add(c);
-                                if (iteraciones >= 10)
-                                    break;
-                                iteraciones++;
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
+                        int iteraciones = 0;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            CategoriasCuentas c = new CategoriasCuentas(
+                                    document.getString("nombre"),
+                                    document.getString("icon"),
+                                    document.getDouble("gastos"),
+                                    document.getDouble("budget")
+                            );
+                            categorias.add(c);
+                            if (iteraciones >= 10)
+                                break;
+                            iteraciones++;
+                        }
 
-                            categorias.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getGastos()))));
-                            for (int i = 0; i<categorias.size(); i++)
-                                entries.add(new BarEntry(i, floats.get(i)));
+                        categorias.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getGastos()))));
+                        for (int i = 0; i<categorias.size(); i++)
+                            entries.add(new BarEntry(i, floats.get(i)));
 
-                            BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                            BarData data = new BarData(set);
-                            data.setBarWidth(0.9f); // set custom bar width
-                            dineroCategorias.setData(data);
-                            dineroCategorias.setFitBars(true); // make the x-axis fit exactly all bars
-                            dineroCategorias.invalidate(); // refresh
-                        } else
-                            Log.wtf("TASK FAILED", task.getException());
-                    }
+                        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+                        BarData data = new BarData(set);
+                        data.setBarWidth(0.9f); // set custom bar width
+                        dineroCategorias.setData(data);
+                        dineroCategorias.setFitBars(true); // make the x-axis fit exactly all bars
+                        dineroCategorias.invalidate(); // refresh
+                    } else
+                        Log.wtf("APL TASK FAILED", task.getException());
                 });
     }
 
@@ -214,38 +208,35 @@ public class EstadisticasFrag extends Fragment {
 
         db.collection("users").document(email).collection("cuentas").orderBy("gastos", Query.Direction.DESCENDING)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
-                            int iteraciones = 0;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CategoriasCuentas c = new CategoriasCuentas(
-                                        document.getString("nombre"),
-                                        "",
-                                        document.getDouble("gastos"),
-                                        0.0
-                                );
-                                cuentas.add(c);
-                                if (iteraciones >= 10)
-                                    break;
-                                iteraciones++;
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
+                        int iteraciones = 0;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            CategoriasCuentas c = new CategoriasCuentas(
+                                    document.getString("nombre"),
+                                    "",
+                                    document.getDouble("gastos"),
+                                    0.0
+                            );
+                            cuentas.add(c);
+                            if (iteraciones >= 10)
+                                break;
+                            iteraciones++;
+                        }
 
-                            cuentas.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getGastos()))));
-                            for (int i = 0; i<cuentas.size(); i++)
-                                entries.add(new BarEntry(i, floats.get(i)));
+                        cuentas.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getGastos()))));
+                        for (int i = 0; i<cuentas.size(); i++)
+                            entries.add(new BarEntry(i, floats.get(i)));
 
-                            BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                            BarData data = new BarData(set);
-                            data.setBarWidth(0.9f); // set custom bar width
-                            dineroCuentas.setData(data);
-                            dineroCuentas.setFitBars(true); // make the x-axis fit exactly all bars
-                            dineroCuentas.invalidate(); // refresh
-                        } else
-                            Log.wtf("TASK FAILED", task.getException());
-                    }
+                        BarDataSet set = new BarDataSet(entries, "BarDataSet");
+                        BarData data = new BarData(set);
+                        data.setBarWidth(0.9f); // set custom bar width
+                        dineroCuentas.setData(data);
+                        dineroCuentas.setFitBars(true); // make the x-axis fit exactly all bars
+                        dineroCuentas.invalidate(); // refresh
+                    } else
+                        Log.wtf("APL TASK FAILED", task.getException());
                 });
     }
 

@@ -72,7 +72,7 @@ public class CategoriasFrag extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.wtf("TAMAÑO TASK", "" + task.getResult().size());
+                            Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("nombre") && document.contains("icon")) {
                                     CategoriasCuentas cat = new CategoriasCuentas(
@@ -81,13 +81,13 @@ public class CategoriasFrag extends Fragment {
                                             document.getDouble("gastos"),
                                             document.getDouble("budget"));
                                     categorias.add(cat);
-                                    Log.wtf("AÑADIDO", document.getId() + " => " + document.getData());
+                                    Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
                                 } else
-                                    Log.wtf("SALTADO", document.getId());
+                                    Log.wtf("APL SALTADO", document.getId());
                             }
                             rv.getAdapter().notifyDataSetChanged();
                         } else {
-                            Log.w("TAG", "Error getting documents.", task.getException());
+                            Log.w("APL TASK FALLADO", "Error getting documents.", task.getException());
                         }
                     }
                 });

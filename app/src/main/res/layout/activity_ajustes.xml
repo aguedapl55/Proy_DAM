@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AjustesScreen">
+    tools:context=".Funcionalidad.AjustesActivity">
 
     <LinearLayout
         android:id="@+id/linlayout"
@@ -26,7 +26,7 @@
             app:srcCompat="@drawable/arrow_back"
             android:scaleType="fitCenter"
             android:background="@null"
-            android:onClick="exit"
+            android:onClick="revert"
             />
 
         <TextView
@@ -53,6 +53,40 @@
             />
 
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/sett_SelectUserSpin"
+        android:layout_width="100pt"
+        android:layout_height="20pt"
+        app:layout_constraintTop_toBottomOf="@id/linlayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="25dp"
+        />
+
+    <Button
+        android:id="@+id/sett_SelectUserAddUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sett_addUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sett_SelectUserSpin"
+        android:layout_marginTop="20dp"
+        android:onClick="goto_AddFriend"/>
+<!--        app:layout_constraintEnd_toStartOf="@id/sett_SelectUserAddChild" -->
+
+    <!--<Button
+        android:id="@+id/sett_SelectUserAddChild"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sett_addChild"
+        tools:layout_editor_absoluteX="257dp"
+        tools:layout_editor_absoluteY="164dp"
+        app:layout_constraintStart_toEndOf="@id/sett_SelectUserAddUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sett_SelectUserSpin"
+        android:layout_marginTop="20dp"/>-->
 
     <EditText
         android:id="@+id/sett_NewUser"
@@ -136,19 +170,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sett_SignOut"
         android:layout_marginBottom="50dp"/>
-
-
-
-    <!--
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/linlayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
