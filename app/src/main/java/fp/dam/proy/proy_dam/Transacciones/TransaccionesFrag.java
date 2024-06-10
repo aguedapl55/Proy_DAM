@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,29 +16,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import fp.dam.proy.proy_dam.Funcionalidad.AddFriendActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class TransaccionesFrag extends Fragment {
-    private String email;
+    private String email, usuario;
     private FirebaseFirestore db;
     private RecyclerView rv;
     private List<Transacciones> transacciones;
 
     public TransaccionesFrag() {}
 
-    public static TransaccionesFrag newInstance(String email) {
+    public static TransaccionesFrag newInstance(String email, String usuario) {
         TransaccionesFrag fragment = new TransaccionesFrag();
         Bundle args = new Bundle();
-        args.putString("email", "email");
+        args.putString("email", email);
+        args.putString("usuario", usuario);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,11 +52,11 @@ public class TransaccionesFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         transacciones = new ArrayList<>();
-        db = FirebaseFirestore.getInstance();
         try {
             email = getArguments().getString("email");
-            rv.getAdapter().notifyDataSetChanged();
+            usuario = getArguments().getString("usuario");
         } catch (NullPointerException e) {}
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -59,12 +65,45 @@ public class TransaccionesFrag extends Fragment {
         try {
             rv = rootView.findViewById(R.id.transRecyclerView);
             rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
-            rellenarRV(rv);
+            checkRellenar();
             TransaccionesAdapter adapter = new TransaccionesAdapter(transacciones);
             adapter.notifyDataSetChanged();
             rv.setAdapter(adapter);
         } catch (NullPointerException e) {}
         return rootView;
+    }
+
+    private void checkRellenar() {
+        Log.wtf("APL usuario.equals(email)", "" + usuario.equals(email));
+        if (usuario.equals(email)) {
+            rellenarRV(rv);
+        }
+        else {
+            db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+                List<String> usersAccesibles = new ArrayList<>();
+                DocumentSnapshot doc = task.getResult();
+                usersAccesibles.addAll(Arrays.asList(
+                        doc.get("hijos").toString()
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(", ")));
+                usersAccesibles.removeIf(d -> d.equals(""));
+                Log.wtf("APL usersAccesibles.contains(email)", "" + usersAccesibles.contains(email));
+                if (usersAccesibles.contains(email))
+                    rellenarRV(rv);
+                else {
+                    db.collection("users").document(email).get().addOnCompleteListener(task2 -> {
+                        Map<String, Boolean> mapa = (Map<String, Boolean>) task2.getResult().get("visibilidad");
+                        boolean valor = mapa.get("transacciones");
+                        Log.wtf("APL mapa.get(transacciones)", "" + mapa.get("transacciones") + "; valor = " + valor);
+                        if (valor)
+                            rellenarRV(rv);
+                        else
+                            Toast.makeText(getContext(), "No tienes acceso a los datos", Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
+        }
     }
 
     private void rellenarRV(@NonNull RecyclerView rv) {
@@ -96,11 +135,6 @@ public class TransaccionesFrag extends Fragment {
                     }
                 });
         //Timestamp now = new Timestamp(new Date(124, 0, 27)); //meses empiezan en 0, años empiezan en 1900
-    }
-
-    public void goto_AddTransaccion(View view) {
-        Intent i = new Intent(getActivity(), AddTransaccionActivity.class);
-        startActivity(i);
     }
 
 }

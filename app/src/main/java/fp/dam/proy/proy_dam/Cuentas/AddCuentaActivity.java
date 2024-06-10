@@ -1,5 +1,6 @@
 package fp.dam.proy.proy_dam.Cuentas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,10 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
+import fp.dam.proy.proy_dam.Funcionalidad.MainActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class AddCuentaActivity extends AppCompatActivity {
-    String email;
+    String email, password, usuario;
     FirebaseFirestore db;
     private EditText nombreTxt, iconTxt, dineroTxt, budgetTxt;
 
@@ -21,7 +23,13 @@ public class AddCuentaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_cuenta);
-        email = getIntent().getExtras().getString("email");
+
+        try {
+            email = getIntent().getExtras().getString("email");
+            password = getIntent().getExtras().getString("password");
+            usuario = getIntent().getExtras().getString("usuario");
+        } catch (NullPointerException e) {}
+
         db = FirebaseFirestore.getInstance();
         nombreTxt = findViewById(R.id.addcta_nombre);
         iconTxt = findViewById(R.id.addcta_icon);
@@ -31,11 +39,16 @@ public class AddCuentaActivity extends AppCompatActivity {
 
 
     public void goto_MainActivity(View view) {
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("email", email);
+        i.putExtra("usuario", usuario);
+        i.putExtra("password", password );
+        startActivity(i);
         finish();
     }
 
     public void confirm(View view) {
-        Double gastos, budget = 0.0;
+        Double gastos, budget;
         String nombre, icon;
         try {
             gastos = Double.parseDouble(dineroTxt.getText().toString());

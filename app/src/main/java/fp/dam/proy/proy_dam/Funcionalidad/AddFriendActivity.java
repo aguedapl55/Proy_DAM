@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,15 +26,18 @@ public class AddFriendActivity extends AppCompatActivity {
     String usuario, password, email;
     EditText emailInput, codeInput;
     TextView emailDisplay, codeDisplay;
-    Switch isChildSwitch;
+    MaterialSwitch isChildSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_friend);
-        email = getIntent().getExtras().getString("email");
-        password = getIntent().getExtras().getString("password");
-        usuario = getIntent().getExtras().getString("usuario");
+
+        try {
+            email = getIntent().getExtras().getString("email");
+            password = getIntent().getExtras().getString("password");
+            usuario = getIntent().getExtras().getString("usuario");
+        } catch (NullPointerException e) {}
 
         emailInput = findViewById(R.id.friend_inputEmail);
         codeInput = findViewById(R.id.friend_inputCode);
@@ -50,7 +50,7 @@ public class AddFriendActivity extends AppCompatActivity {
 
         db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
             int code = (int) Math.floor(Double.parseDouble(task.getResult().getDouble("code").toString()));
-            emailDisplay.setText(Double.toString(code));
+            emailDisplay.setText(String.format("5f", Double.toString(code)));
         });
 
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        email = getIntent().getExtras().getString("email");
-        password = getIntent().getExtras().getString("password");
+        try {
+            email = getIntent().getExtras().getString("email");
+            password = getIntent().getExtras().getString("password");
+        } catch (NullPointerException e) {}
         usuario = getIntent().getExtras().getString("usuario");
         Log.wtf("APL USUARIO MAIN", usuario);
         Log.wtf("APL EMAIL MAIN", email);
@@ -137,7 +138,10 @@ public class MainActivity extends AppCompatActivity {
         if (existeClase) {
             Intent i = new Intent(this, clase.getClass());
             i.putExtra("email", email);
+            i.putExtra("usuario", usuario);
+            i.putExtra("password", password );
             startActivity(i);
+            finish();
         }
     }
 

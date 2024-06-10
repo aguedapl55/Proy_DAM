@@ -7,38 +7,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
-import fp.dam.proy.proy_dam.Transacciones.Transacciones;
+import java.util.Map;
 
 public class EstadisticasFrag extends Fragment {
 
-    private String email;
+    private String email, usuario;
     private FirebaseFirestore db;
     BarChart dineroMonth, dineroCategorias, dineroCuentas;
 
     public EstadisticasFrag() {}
 
-    public static EstadisticasFrag newInstance(String email) {
+    public static EstadisticasFrag newInstance(String email, String usuario) {
         EstadisticasFrag fragment = new EstadisticasFrag();
         Bundle args = new Bundle();
-        args.putString("email", "email");
+        args.putString("email", email);
+        args.putString("usuario", usuario);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,12 +43,11 @@ public class EstadisticasFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
         try {
             email = getArguments().getString("email");
-        } catch (NullPointerException e) {
-            Toast.makeText(this.getContext(), "EXCEPTION???", Toast.LENGTH_LONG).show();
-        }
+            usuario = getArguments().getString("usuario");
+        } catch (NullPointerException e) {}
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -61,21 +57,64 @@ public class EstadisticasFrag extends Fragment {
         dineroCategorias = rootView.findViewById(R.id.statsBCDineroCat);
         dineroCuentas = rootView.findViewById(R.id.statsBCDineroCta);
 
-        Query dinMonthRef = db.collection("users").document(email).collection("transacciones").orderBy("fecha", Query.Direction.DESCENDING);
-        //rellenarStats(dineroMonth, );
-
-        rellenarStatsMonth();
-        rellenarStatsCategorias();
-        rellenarStatsCuentas();
+        checkRellenar();
         return rootView;
+    }
+
+    private void checkRellenar() {
+        Log.wtf("APL usuario.equals(email)", "" + usuario.equals(email));
+        if (usuario.equals(email)) {
+//            rellenarRV(rv);
+            setupStats();
+        }
+        else {
+            db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+                List<String> usersAccesibles = new ArrayList<>();
+                DocumentSnapshot doc = task.getResult();
+                usersAccesibles.addAll(Arrays.asList(
+                        doc.get("hijos").toString()
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(", ")));
+                usersAccesibles.removeIf(d -> d.equals(""));
+                Log.wtf("APL usersAccesibles.contains(email)", "" + usersAccesibles.contains(email));
+                if (usersAccesibles.contains(email))
+//                    rellenarRV(rv);
+                    setupStats();
+                else {
+                    db.collection("users").document(email).get().addOnCompleteListener(task2 -> {
+                        Map<String, Boolean> mapa = (Map<String, Boolean>) task2.getResult().get("visibilidad");
+                        boolean valor = mapa.containsKey("cuentas") ? mapa.get("cuentas") : false;
+                        Log.wtf("APL mapa.get(cuentas)", "" + mapa.get("cuentas") + "; valor = " + valor);
+                        if (valor)
+//                            rellenarRV(rv);
+                            setupStats();
+                        else {
+                            Toast.makeText(getContext(), "No tienes acceso a los datos", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void setupStats() {
+        Query dinMonthRef = db.collection("users").document(email).collection("transacciones")
+                .orderBy("fecha", Query.Direction.DESCENDING);
+        rellenarStats(dinMonthRef, dineroMonth);
+
+        Query dinCatRef = db.collection("users").document(email).collection("categorias")
+                .orderBy("gastos", Query.Direction.DESCENDING);
+        rellenarStats(dinCatRef, dineroCategorias);
+
+        Query dinCtaRef = db.collection("users").document(email).collection("cuentas")
+                .orderBy("gastos", Query.Direction.DESCENDING);
+        rellenarStats(dinCtaRef, dineroCuentas);
     }
 
     private void rellenarStats(Query query, BarChart barChart) {
         List<BarEntry> entries = new ArrayList<>();
         List<Float> floats = new ArrayList<>();
-
-        List<Transacciones> transacciones = new ArrayList<>();
-        List<CategoriasCuentas> categoriasCuentas = new ArrayList<>();
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -83,40 +122,16 @@ public class EstadisticasFrag extends Fragment {
                 boolean esTrans = task.getResult().getDocuments().get(0).contains("dinero");
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     if (esTrans) { //Transacciones
-                        //Transacciones trans = document.toObject(Transacciones.class);
-                        transacciones.add(document.toObject(Transacciones.class));
-                        /*
-                        transacciones.add(new Transacciones(
-                                document.getDouble("dinero"),
-                                document.getTimestamp("fecha"),
-                                document.getString("nombre"),
-                                document.getString("cuenta"),
-                                document.getString("comentario")
-                        ));
-                         */
+                        floats.add(Float.parseFloat(document.getDouble("dinero").toString()));
+
                     } else { //CategoriasCuentas
-                        categoriasCuentas.add(document.toObject(CategoriasCuentas.class));
-                        /*
-                        categoriasCuentas.add(new CategoriasCuentas(
-                                document.getString("nombre"),
-                                document.getString("icon"),
-                                document.getDouble("gastos"),
-                                document.getDouble("budget")
-                        ));
-                         */
+                        floats.add(Float.parseFloat(document.getDouble("gastos").toString()));
                     }
+
                     if (iteraciones++ >= 10) break;
                 }
-                if (esTrans) { //Transacciones
-                    transacciones.forEach(t -> floats.add(Float.parseFloat(String.valueOf(t.getDinero()))));
-                    for (int i = 0; i < transacciones.size(); i++)
-                        entries.add(new BarEntry(i, floats.get(i)));
-                }
-                else { //CategoriasCuentas
-                    categoriasCuentas.forEach(cc -> floats.add(Float.parseFloat(String.valueOf(cc.getGastos()))));
-                    for (int i = 0; i < categoriasCuentas.size(); i++)
-                        entries.add(new BarEntry(i, floats.get(i)));
-                }
+                for (int i = 0; i < floats.size(); i++)
+                    entries.add(new BarEntry(i, floats.get(i)));
 
                 BarDataSet set = new BarDataSet(entries, "BarDataSet");
                 BarData data = new BarData(set);
@@ -128,6 +143,8 @@ public class EstadisticasFrag extends Fragment {
         });
     }
 
+    // metodos individuales antiguos
+    /*
     private void rellenarStatsMonth() {
         List<BarEntry> entries = new ArrayList<>();
         List<Float> floats = new ArrayList<>();
@@ -239,6 +256,6 @@ public class EstadisticasFrag extends Fragment {
                         Log.wtf("APL TASK FAILED", task.getException());
                 });
     }
-
+*/
 
 }

@@ -1,6 +1,7 @@
 package fp.dam.proy.proy_dam.Transacciones;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,11 +34,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import fp.dam.proy.proy_dam.Funcionalidad.MainActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class AddTransaccionActivity extends AppCompatActivity {
 
-    String email;
+    String email, password, usuario;
     FirebaseFirestore db;
     Calendar calendario;
     private Spinner catSpin, ctaSpin;
@@ -54,6 +56,8 @@ public class AddTransaccionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_transaccion);
 
         email = getIntent().getExtras().getString("email");
+        password = getIntent().getExtras().getString("password");
+        usuario = getIntent().getExtras().getString("usuario");
         db = FirebaseFirestore.getInstance();
         spinnerSetup();
         comText = findViewById(R.id.addtrans_comentario);
@@ -122,6 +126,11 @@ public class AddTransaccionActivity extends AppCompatActivity {
     }
 
     public void goto_MainActivity(View view) {
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("email", email);
+        i.putExtra("usuario", usuario);
+        i.putExtra("password", password);
+        startActivity(i);
         finish();
     }
 

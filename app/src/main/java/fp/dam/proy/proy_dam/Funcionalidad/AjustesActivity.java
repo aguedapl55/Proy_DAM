@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -38,9 +37,11 @@ public class AjustesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ajustes);
-        email = getIntent().getExtras().getString("email");
-        password = getIntent().getExtras().getString("password");
-        usuario = getIntent().getExtras().getString("usuario");
+        try {
+            email = getIntent().getExtras().getString("email");
+            password = getIntent().getExtras().getString("password");
+            usuario = getIntent().getExtras().getString("usuario");
+        } catch (NullPointerException e) {}
         emailOG = email; usuarioOG = usuario; passwordOG = password;
 
         Log.wtf("APL USUARIO SETTINGS", usuario);
@@ -96,75 +97,6 @@ public class AjustesActivity extends AppCompatActivity {
 
     }
 
-    /*public void setUpButtons() {
-        addEmail = findViewById(R.id.sett_SelectUserAddUser);
-        addEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDialogs(v, "vinculadas");
-            }
-        });
-
-        addChild = findViewById(R.id.sett_SelectUserAddChild);
-        addChild.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDialogs(v, "hijos");
-            }
-        });
-    }
-
-    private void setDialogs(View view, String coleccion) {
-        Dialog dialog = new Dialog(getApplicationContext());
-        dialog.setContentView(R.layout.dialog_add_friend);
-
-        EditText emailInput = dialog.findViewById(R.id.dialog_inputEmail);
-        EditText codeInput = dialog.findViewById(R.id.dialog_inputCode);
-
-        ImageButton confirmButton = dialog.findViewById(R.id.dialog_butConfirm);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                */
-    /*try {
-                    String emailDialog = emailInput.getText().toString();
-                    String codeDialog = codeInput.getText().toString();
-                    boolean emailExists = db.collection("users").document(emailDialog).get().isSuccessful();
-                    db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            if (codeDialog.equals(task.getResult().get("code")) && emailExists) {
-                                String[] aux = task.getResult().get(coleccion).toString()
-                                        .replace("[", "")
-                                        .replace("]", ", " + emailDialog)
-                                        .split(", ");
-                                db.collection("users").document(usuario).update(coleccion, aux);
-                            } else if (emailExists)
-                                Toast.makeText(getApplicationContext(), "El código introducido no es correcto", Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(getApplicationContext(), "El email introducido no es correcto", Toast.LENGTH_SHORT).show();
-                        } else
-                                Toast.makeText(getApplicationContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    });
-                } catch (IllegalStateException e) {
-                    Toast.makeText(getApplicationContext(), "No se han rellenado todos los campos", Toast.LENGTH_SHORT).show();
-                } catch (IllegalArgumentException e) {
-
-                }*//*
-                dialog.dismiss();
-            }
-        });
-
-        ImageButton cancelButton = dialog.findViewById(R.id.dialog_butClose);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }*/
-
     public void updateUser(View v) {
         AuthCredential creds = EmailAuthProvider.getCredential(email, password);
         fbAuth.getCurrentUser().reauthenticate(creds).addOnCompleteListener(reauth ->  {
@@ -203,6 +135,8 @@ public class AjustesActivity extends AppCompatActivity {
                 Toast.makeText(this, "Las contraseñas introducidas no son iguales", Toast.LENGTH_SHORT).show();
         } catch (IllegalStateException | IllegalArgumentException e) {
             Toast.makeText(this, "No se han rellenado todos los campos", Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -221,8 +155,44 @@ public class AjustesActivity extends AppCompatActivity {
         finish();
     }
 
+/*
+    public void goto_Activity(View v) {
+        Class clase = null;
+        int id = v.getId();
+        if (id == R.id.sett_changeSharedData) {
+            clase = SharedDataActivity.class;
+        } else if (id == R.id.sett_SelectUserAddUser) {
+            clase = AddFriendActivity.class;
+        } else if (id == R.id.backBut) {
+            email = emailOG;
+            usuario = usuarioOG;
+            password = passwordOG;
+            clase = MainActivity.class;
+        } else if (id == R.id.confirmBut) {
+            clase = MainActivity.class;
+        }
+        if (clase.getClass() != null) {
+            Intent i = new Intent(this, clase.getClass());
+            i.putExtra("email", email);
+            i.putExtra("usuario", usuario);
+            i.putExtra("password", password);
+            startActivity(i);
+            finish();
+        }
+    }
+*/
+
     public void goto_AddFriend(View v) {
         Intent i = new Intent(this, AddFriendActivity.class);
+        i.putExtra("email", email);
+        i.putExtra("usuario", usuario);
+        i.putExtra("password", password );
+        startActivity(i);
+        finish();
+    }
+
+    public void goto_SharedData(View v) {
+        Intent i = new Intent(this, SharedDataActivity.class);
         i.putExtra("email", email);
         i.putExtra("usuario", usuario);
         i.putExtra("password", password );

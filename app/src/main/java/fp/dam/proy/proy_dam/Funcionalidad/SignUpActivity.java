@@ -44,13 +44,9 @@ public class SignUpActivity extends AppCompatActivity {
                 if (!task.isSuccessful())
                         Toast.makeText(this, "No se pudo crear el usuario", Toast.LENGTH_SHORT).show();
                 else {
-                   /* Map<String, Object> newUser = new HashMap<>();
-                    newUser.put("email", email);*/
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     configNewUser(db);
-                    //db.collection("users").document(email).set(newUser);
-                    db.terminate();
 
                     Intent i = new Intent(this, MainActivity.class);
                     i.putExtra("email", email);
@@ -73,15 +69,13 @@ public class SignUpActivity extends AppCompatActivity {
         base.put("email", email);
         base.put("vinculadas", List.of(email));
         base.put("hijos", List.of());
+        Map<String, Boolean> visibilidad = new HashMap<>();
+        visibilidad.put("cuentas", true);
+        visibilidad.put("categorias", true);
+        visibilidad.put("transacciones", true);
+        visibilidad.put("estadisticas", true);
+        base.put("visibilidad", visibilidad);
         base.put("code", Math.toIntExact((long) Math.floor(Math.random() * 100000))); //codigo de cinco nums para añadir cuenta
-        /*try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(email.getBytes(StandardCharsets.UTF_8));
-            base.put("hash", Base64.getEncoder().encodeToString(md.digest()));
-
-        } catch (Exception e) {
-            Log.wtf("APL FALLO EN CONFIG USER", e.getMessage());
-        }*/
         usuario.set(base).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(this, "OLEEEEEEE", Toast.LENGTH_SHORT).show();
@@ -97,8 +91,6 @@ public class SignUpActivity extends AppCompatActivity {
         usuario.collection("parametros").add(params);
 */
 
-//        usuario.collection("vinculadas").add(email);
-
         usuario.collection("categorias").add(new CategoriasCuentas("food", "", 0, 0));
         usuario.collection("categorias").add(new CategoriasCuentas("entertainment", "", 0, 0));
         usuario.collection("categorias").add(new CategoriasCuentas("transport", "", 0, 0));
@@ -106,25 +98,12 @@ public class SignUpActivity extends AppCompatActivity {
         usuario.collection("categorias").add(new CategoriasCuentas("pets", "", 0, 0));
         usuario.collection("categorias").add(new CategoriasCuentas("family", "", 0, 0));
         usuario.collection("categorias").add(new CategoriasCuentas("clothes", "", 0, 0));
-        //usuario.collection("categorias").add(new CategoriasCuentas("", "", 0, 0));
 
         Map<String, Object> transacciones = new HashMap<>();
         usuario.collection("transacciones").add(transacciones);
 
         usuario.collection("cuentas").add(new CategoriasCuentas("debit card", "credit_card", 0, 0));
         usuario.collection("cuentas").add(new CategoriasCuentas("cash", "wallet", 0, 0));
-
-        /*
-        Map<String, Object> controlParental = new HashMap<>();
-        controlParental.put()
-        DocumentReference CP = db
-                .collection("users").document(email)
-                .collection("controlParental").document("message1");
-         */
-
-        //Map<String, Object> budgets = new HashMap<>();
-        //budgets.put("budgets", "budgets");
-        //db.collection("users").document(email).collection("budgets").add(budgets);
     }
 
     public void goto_login(View view) {

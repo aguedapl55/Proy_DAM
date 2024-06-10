@@ -56,7 +56,7 @@
 
     <Spinner
         android:id="@+id/sett_SelectUserSpin"
-        android:layout_width="100pt"
+        android:layout_width="150pt"
         android:layout_height="20pt"
         app:layout_constraintTop_toBottomOf="@id/linlayout"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,23 +70,22 @@
         android:layout_height="wrap_content"
         android:text="@string/sett_addUser"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sett_changeSharedData"
         app:layout_constraintTop_toBottomOf="@id/sett_SelectUserSpin"
         android:layout_marginTop="20dp"
         android:onClick="goto_AddFriend"/>
-<!--        app:layout_constraintEnd_toStartOf="@id/sett_SelectUserAddChild" -->
 
-    <!--<Button
-        android:id="@+id/sett_SelectUserAddChild"
+    <Button
+        android:id="@+id/sett_changeSharedData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sett_addChild"
-        tools:layout_editor_absoluteX="257dp"
-        tools:layout_editor_absoluteY="164dp"
+        android:text="Datos compartidos"
         app:layout_constraintStart_toEndOf="@id/sett_SelectUserAddUser"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sett_SelectUserSpin"
-        android:layout_marginTop="20dp"/>-->
+        android:layout_marginTop="20dp"
+        android:onClick="goto_SharedData"
+        />
 
     <EditText
         android:id="@+id/sett_NewUser"

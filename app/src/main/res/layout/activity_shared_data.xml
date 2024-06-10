@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Funcionalidad.SharedDataActivity">
+    <LinearLayout
+        android:id="@+id/linlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/backBut"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/arrow_back"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:onClick="exit"
+            android:contentDescription="@string/Back_Arrow"
+            />
+
+        <TextView
+            android:id="@+id/addcat_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/shared_datos_compartidos" />
+
+        <ImageButton
+            android:id="@+id/confirmBut"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/check"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:onClick="confirm"
+            android:contentDescription="@string/Check"
+            />
+
+    </LinearLayout>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/shared_categoriasSW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/categorias"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linlayout"
+        android:layout_margin="75dp"
+        />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/shared_cuentasSW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cuentas"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shared_categoriasSW"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="75dp"
+        />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/shared_transSW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/transacciones"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shared_cuentasSW"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="75dp"
+        />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/shared_statsSW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/estadisticas"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shared_transSW"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="75dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
