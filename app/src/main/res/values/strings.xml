@@ -35,5 +35,6 @@
     <string name="sett_addUser">Añadir usuario</string>
     <string name="sett_addChild">Añadir Hijo</string>
     <string name="friend_addEmail">AÑADIR EMAIL</string>
+    <string name="shared_datos_compartidos">Datos compartidos</string>
 
 </resources>
