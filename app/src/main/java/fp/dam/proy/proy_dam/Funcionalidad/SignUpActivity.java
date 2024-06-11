@@ -78,9 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
         base.put("code", Math.toIntExact((long) Math.floor(Math.random() * 100000))); //codigo de cinco nums para añadir cuenta
         usuario.set(base).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(this, "OLEEEEEEE", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "FALLO TODO MAL", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Se ha creado la cuenta con éxito", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,19 +89,28 @@ public class SignUpActivity extends AppCompatActivity {
         usuario.collection("parametros").add(params);
 */
 
-        usuario.collection("categorias").add(new CategoriasCuentas("food", "", 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("entertainment", "", 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("transport", "", 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("health", "", 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("pets", "", 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("family", "", 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("clothes", "", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("food", 0, 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("entertainment", 0, 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("transport", 0, 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("health", 0, 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("pets", 0, 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("family", 0, 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas("clothes", 0, 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("food", "", 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("entertainment", "", 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("transport", "", 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("health", "", 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("pets", "", 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("family", "", 0, 0));
+//        usuario.collection("categorias").add(new CategoriasCuentas("clothes", "", 0, 0));
 
         Map<String, Object> transacciones = new HashMap<>();
         usuario.collection("transacciones").add(transacciones);
 
-        usuario.collection("cuentas").add(new CategoriasCuentas("debit card", "credit_card", 0, 0));
-        usuario.collection("cuentas").add(new CategoriasCuentas("cash", "wallet", 0, 0));
+        usuario.collection("cuentas").add(new CategoriasCuentas("debit card", 0, 0, 0));
+        usuario.collection("cuentas").add(new CategoriasCuentas("cash", 0, 0, 0));
+//        usuario.collection("cuentas").add(new CategoriasCuentas("debit card", "credit_card", 0, 0));
+//        usuario.collection("cuentas").add(new CategoriasCuentas("cash", "wallet", 0, 0));
     }
 
     public void goto_login(View view) {

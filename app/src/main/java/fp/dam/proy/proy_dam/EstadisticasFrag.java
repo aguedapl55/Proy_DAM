@@ -119,7 +119,7 @@ public class EstadisticasFrag extends Fragment {
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 int iteraciones = 0;
-                boolean esTrans = task.getResult().getDocuments().get(0).contains("dinero");
+                boolean esTrans = task.getResult().getDocuments().get(task.getResult().size()-1).contains("dinero");
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     if (esTrans) { //Transacciones
                         floats.add(Float.parseFloat(document.getDouble("dinero").toString()));

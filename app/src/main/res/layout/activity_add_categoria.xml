@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/Back_Arrow">
+        >
 
         <ImageButton
             android:id="@+id/addcat_backBut"
@@ -30,6 +30,7 @@
             android:scaleType="fitCenter"
             android:background="@null"
             android:onClick="goto_MainActivity"
+            android:contentDescription="@string/Back_Arrow"
             />
 
         <TextView
@@ -64,24 +65,24 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:hint="Nombre"
+        android:hint="@string/nombre"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addcat_linlayout"
         android:layout_marginTop="100dp"/>
 
     <!-- TODO CAMBIAR A ESCOGER ICONO -->
-    <EditText
-        android:id="@+id/addcat_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:hint="Icono"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addcat_nombre"
-        android:layout_marginTop="25dp"/>
+<!--    <EditText-->
+<!--        android:id="@+id/addcat_icon"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:ems="10"-->
+<!--        android:inputType="text"-->
+<!--        android:hint="Icono"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/addcat_nombre"-->
+<!--        android:layout_marginTop="25dp"/>-->
 
     <EditText
         android:id="@+id/addcat_dinero"
@@ -89,11 +90,12 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberSigned|numberDecimal"
-        android:hint="Dinero"
+        android:hint="@string/dinero_gastado"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addcat_icon"
+        app:layout_constraintTop_toBottomOf="@id/addcat_nombre"
         android:layout_marginTop="25dp"/>
+<!--        app:layout_constraintTop_toBottomOf="@id/addcat_icon"-->
 
     <EditText
         android:id="@+id/addcat_budget"
@@ -101,7 +103,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal"
-        android:hint="Budget"
+        android:hint="@string/budget_mensual"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addcat_dinero"

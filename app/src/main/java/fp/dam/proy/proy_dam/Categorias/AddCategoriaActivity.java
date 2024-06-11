@@ -33,7 +33,7 @@ public class AddCategoriaActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         nombreTxt = findViewById(R.id.addcat_nombre);
-        iconTxt = findViewById(R.id.addcat_icon);
+//        iconTxt = findViewById(R.id.addcat_icon);
         dineroTxt = findViewById(R.id.addcat_dinero);
         budgetTxt = findViewById(R.id.addcat_budget);
     }
@@ -49,19 +49,21 @@ public class AddCategoriaActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-        Double dinero, budget;
-        String nombre, icon;
+//        Double dinero, budget;
+        Double dinero, dineroMens, budget;
+//        String nombre, icon;
+        String nombre;
         try {
-            dinero = Double.parseDouble(dineroTxt.getText().toString());
+            dinero = dineroMens = Double.parseDouble(dineroTxt.getText().toString());
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
-            icon = iconTxt.getText().toString();
+//            icon = iconTxt.getText().toString();
             if (nombre.isEmpty())
                 throw new IllegalArgumentException();
-            CategoriasCuentas categoria = new CategoriasCuentas(nombre, icon, dinero, budget);
+            CategoriasCuentas categoria = new CategoriasCuentas(nombre, dinero, dineroMens, budget);
             db.collection("users").document(email).collection("categorias").add(categoria).addOnCompleteListener(task -> {
                 if (task.isSuccessful())
-                    Toast.makeText(this, "Se ha añadido la transacción", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Se ha añadido la categoria", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(this, "No se ha podido añadir", Toast.LENGTH_SHORT).show();
 

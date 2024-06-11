@@ -1,9 +1,9 @@
 package fp.dam.proy.proy_dam.CategoriasCuentas;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,23 +40,25 @@ public class CatCtaAdapter extends RecyclerView.Adapter<CatCtaAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nombre, dinero;
-        private final ImageView icon;
+//        private final ImageView icon;
 
         public ViewHolder(View v) {
             super(v);
             nombre = v.findViewById(R.id.ccRV_nombre);
-            icon = v.findViewById(R.id.ccRV_icon);
+//            icon = v.findViewById(R.id.ccRV_icon);
             dinero = v.findViewById(R.id.ccRV_dinero);
         }
 
         void bind(CategoriasCuentas catctas) {
             nombre.setText(catctas.getNombre());
-            icon.setImageResource(icon.getResources().getIdentifier(catctas.getIcon(), "drawable", icon.getContext().getPackageName()));
+//            icon.setImageResource(icon.getResources().getIdentifier(catctas.getIcon(), "drawable", icon.getContext().getPackageName()));
             if (catctas.getBudget() == 0) {
                 dinero.setText(String.valueOf(catctas.getGastos()));
             } else {
-                String s = catctas.getGastos() + " / " + catctas.getBudget();
+                String s = catctas.getGastoMens() + " / " + catctas.getBudget();
                 dinero.setText(s);
+                if (catctas.getGastoMens() > catctas.getBudget())
+                    dinero.setTextColor(Color.parseColor("#FF2222"));
             }
         }
     }

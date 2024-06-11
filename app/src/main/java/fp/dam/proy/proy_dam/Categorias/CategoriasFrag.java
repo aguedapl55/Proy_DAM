@@ -1,5 +1,7 @@
 package fp.dam.proy.proy_dam.Categorias;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -113,22 +115,49 @@ public class CategoriasFrag extends Fragment {
                         if (task.isSuccessful()) {
                             Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.contains("nombre") && document.contains("icon")) {
+                                if (document.contains("nombre") && document.contains("gastos")) {
                                     CategoriasCuentas cat = new CategoriasCuentas(
                                             document.getString("nombre"),
-                                            document.getString("icon"),
                                             document.getDouble("gastos"),
+                                            document.getDouble("gastoMens"),
                                             document.getDouble("budget"));
                                     categorias.add(cat);
                                     Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
                                 } else
                                     Log.wtf("APL SALTADO", document.getId());
                             }
-                            rv.getAdapter().notifyDataSetChanged();
                         } else {
                             Log.w("APL TASK FALLADO", "Error getting documents.", task.getException());
                         }
+                        rv.getAdapter().notifyDataSetChanged();
+                        mensOverBudget(rv);
                     }
                 });
+    }
+
+    private void mensOverBudget(@NonNull RecyclerView rv) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Se ha sobrepasado el límite en las siguientes cuentas: \n");
+        int size = sb.length();
+        categorias.forEach(c -> {
+            if (c.getGastoMens() > c.getBudget() && c.getBudget() != 0.0) {
+                Log.wtf("APL mensOverBudget true", c.getNombre());
+                sb.append("- " + c.getNombre() + " (" + (c.getGastoMens() - c.getBudget()) + ")\n");
+            }
+        });
+        if (sb.length() > size) {
+            Log.wtf("APL length>size true", "length = " + sb.length() + "; size = " + size);
+            AlertDialog.Builder constructor = new AlertDialog.Builder(getContext());
+            constructor.setTitle("Budget superado")
+                    .setMessage(sb)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            constructor.create().show();
+        }
     }
 }
