@@ -97,7 +97,8 @@ public class AddTransaccionActivity extends AppCompatActivity {
                 failsCategoria = categorias.contains(categoria) ? false : true;
                 throw new IllegalArgumentException();
             }
-            Transacciones transaccion = new Transacciones(dinero, fecha, categoria, cuenta, comentario);
+            Transacciones transaccion = new Transacciones(email, db.collection("users").document(email).collection("transacciones").document().getId(), dinero, fecha, categoria, cuenta, comentario);
+//            Transacciones transaccion = new Transacciones(dinero, fecha, categoria, cuenta, comentario);
             Double finalDinero = dinero;
             db.collection("users").document(email).collection("transacciones").add(transaccion).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {

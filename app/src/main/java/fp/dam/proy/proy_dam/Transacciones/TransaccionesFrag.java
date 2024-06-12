@@ -121,6 +121,8 @@ public class TransaccionesFrag extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("dinero")) {
                                     Transacciones trans = new Transacciones(
+                                            email,
+                                            document.getId(),
                                             document.getDouble("dinero"),
                                             document.getTimestamp("fecha"),
                                             document.getString("categoria"),
