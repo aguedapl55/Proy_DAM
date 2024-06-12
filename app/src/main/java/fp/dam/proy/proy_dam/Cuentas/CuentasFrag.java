@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ public class CuentasFrag extends Fragment {
     private String email, usuario;
     private FirebaseFirestore db;
     private RecyclerView rv;
+    private TextView taskSize;
     private List<CategoriasCuentas> cuentas;
     Boolean check;
 
@@ -70,6 +72,7 @@ public class CuentasFrag extends Fragment {
         CatCtaAdapter adapter = new CatCtaAdapter(cuentas);
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
+        taskSize = rootView.findViewById(R.id.taskSize);
         return rootView;
     }
 
@@ -117,10 +120,11 @@ public class CuentasFrag extends Fragment {
                     if (task.isSuccessful()) {
                         Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                         if (task.getResult().size() == 0)
-                            Toast.makeText(getContext(), "No hay datos para mostrar", Toast.LENGTH_LONG).show();
+                            taskSize.setText("Aún no has añadido cuentas");
                         else
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if (document.contains("nombre") && document.contains("gastos")) {
+                            taskSize.setText("");
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (document.contains("nombre") && document.contains("gastos")) {
 //                                    double aux = getTransFechas(task.getResult());
 //                                    Date fecha = Date.newBuilder().setDay(1)
 //                                            .setMonth(Calendar.getInstance().get(Calendar.MONTH))
@@ -139,16 +143,16 @@ public class CuentasFrag extends Fragment {
 //                                        .whereEqualTo("cuenta", document.getString("nombre"))
 //                                        .whereEqualTo("fecha", fecha)
 //                                        .get().getResult().getDocuments().stream().mapToDouble(d -> d.getDouble("dinero")).sum();
-                                    CategoriasCuentas cta = new CategoriasCuentas(
-                                            document.getString("nombre"),
-                                            document.getDouble("gastos"),
-                                            document.getDouble("gastoMens"),
-                                            document.getDouble("budget"));
-                                    cuentas.add(cta);
-                                    Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
-                                } else
-                                    Log.wtf("APL SALTADO", document.getId());
-                            }
+                                CategoriasCuentas cta = new CategoriasCuentas(
+                                        document.getString("nombre"),
+                                        document.getDouble("gastos"),
+                                        document.getDouble("gastoMens"),
+                                        document.getDouble("budget"));
+                                cuentas.add(cta);
+                                Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
+                            } else
+                                Log.wtf("APL SALTADO", document.getId());
+                        }
                         rv.getAdapter().notifyDataSetChanged();
                         mensOverBudget(rv);
                     } else {

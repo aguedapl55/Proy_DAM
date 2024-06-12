@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
-import fp.dam.proy.proy_dam.Funcionalidad.MainActivity;
+import fp.dam.proy.proy_dam.Principal.MainActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class AddCuentaActivity extends AppCompatActivity {
     String email, password, usuario;
     FirebaseFirestore db;
-    private EditText nombreTxt, iconTxt, dineroTxt, budgetTxt;
+    private EditText nombreTxt;
+    private EditText dineroTxt;
+    private EditText budgetTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +30,12 @@ public class AddCuentaActivity extends AppCompatActivity {
             email = getIntent().getExtras().getString("email");
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
 
         db = FirebaseFirestore.getInstance();
         nombreTxt = findViewById(R.id.addcta_nombre);
-//        iconTxt = findViewById(R.id.addcta_icon);
         dineroTxt = findViewById(R.id.addcta_dinero);
         budgetTxt = findViewById(R.id.addcta_budget);
     }
@@ -48,16 +51,13 @@ public class AddCuentaActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-        Double gastos, gastoMens, budget;
-//        Double gastos, budget;
+        double gastos, gastoMens, budget;
         String nombre;
-//        String nombre, icon;
         try {
             gastos = gastoMens = Double.parseDouble(dineroTxt.getText().toString());
             //gastos = BigDecimal.valueOf(gastos).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //formating
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
-//            icon = iconTxt.getText().toString();
             if (nombre.isEmpty())
                 throw new IllegalArgumentException();
             CategoriasCuentas cuenta = new CategoriasCuentas(nombre, gastos, gastoMens, budget);

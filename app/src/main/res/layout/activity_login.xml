@@ -4,9 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Funcionalidad.LoginActivity">
+    tools:context=".Principal.LoginActivity">
 
-    <EditText
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:srcCompat="@drawable/piggy_bank_save_svgrepo_com"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/logEdtUsuario"
+        android:tint="@android:color/transparent"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/logEdtUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +29,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="250dp"/>
+        android:layout_marginTop="350dp"
+        />
 
     <EditText
         android:id="@+id/logEdtContrasena"

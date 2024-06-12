@@ -11,14 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
-import fp.dam.proy.proy_dam.Funcionalidad.MainActivity;
+import fp.dam.proy.proy_dam.Principal.MainActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class AddCategoriaActivity extends AppCompatActivity {
 
     String email, password, usuario;
     FirebaseFirestore db;
-    private EditText nombreTxt, iconTxt, dineroTxt, budgetTxt;
+    private EditText nombreTxt;
+    private EditText dineroTxt;
+    private EditText budgetTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +31,12 @@ public class AddCategoriaActivity extends AppCompatActivity {
             email = getIntent().getExtras().getString("email");
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
 
         db = FirebaseFirestore.getInstance();
         nombreTxt = findViewById(R.id.addcat_nombre);
-//        iconTxt = findViewById(R.id.addcat_icon);
         dineroTxt = findViewById(R.id.addcat_dinero);
         budgetTxt = findViewById(R.id.addcat_budget);
     }
@@ -49,15 +52,12 @@ public class AddCategoriaActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-//        Double dinero, budget;
-        Double dinero, dineroMens, budget;
-//        String nombre, icon;
+        double dinero, dineroMens, budget;
         String nombre;
         try {
             dinero = dineroMens = Double.parseDouble(dineroTxt.getText().toString());
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
-//            icon = iconTxt.getText().toString();
             if (nombre.isEmpty())
                 throw new IllegalArgumentException();
             CategoriasCuentas categoria = new CategoriasCuentas(nombre, dinero, dineroMens, budget);

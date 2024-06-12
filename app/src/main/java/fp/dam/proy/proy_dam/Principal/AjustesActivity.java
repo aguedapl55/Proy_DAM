@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Funcionalidad;
+package fp.dam.proy.proy_dam.Principal;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -41,14 +39,15 @@ public class AjustesActivity extends AppCompatActivity {
             email = getIntent().getExtras().getString("email");
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
         emailOG = email; usuarioOG = usuario; passwordOG = password;
 
         Log.wtf("APL USUARIO SETTINGS", usuario);
         Log.wtf("APL USUARIO EMAIL SETTINGS", usuario);
         fbAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        emailInput = findViewById(R.id.sett_NewUser);
         passwordInput = findViewById(R.id.sett_NewPass);
         passConfInput = findViewById(R.id.sett_ConfPass);
         selectUserSpinner();
@@ -63,17 +62,22 @@ public class AjustesActivity extends AppCompatActivity {
                 List<String> usersAccesibles = new ArrayList<>();
                 DocumentSnapshot doc = task.getResult();
 
-                usersAccesibles.addAll(Arrays.asList(
-                        doc.get("vinculadas").toString()
-                        .replace("[", "")
-                        .replace("]", "")
-                        .split(", ")));
-                usersAccesibles.addAll(Arrays.asList(
-                        doc.get("hijos").toString()
-                        .replace("[", "")
-                        .replace("]", "")
-                        .split(", ")));
-                usersAccesibles.removeIf(d -> d.equals(""));
+                try {
+                    usersAccesibles.addAll(Arrays.asList(
+                            doc.get("vinculadas").toString()
+                                    .replace("[", "")
+                                    .replace("]", "")
+                                    .split(", ")));
+                    usersAccesibles.addAll(Arrays.asList(
+                            doc.get("hijos").toString()
+                                    .replace("[", "")
+                                    .replace("]", "")
+                                    .split(", ")));
+                    usersAccesibles.removeIf(d -> d.equals(""));
+                } catch (NullPointerException e) {
+                    usersAccesibles.add(usuario);
+                    Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+                }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, usersAccesibles);
                 adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
@@ -95,32 +99,6 @@ public class AjustesActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void updateUser(View v) {
-        AuthCredential creds = EmailAuthProvider.getCredential(email, password);
-        fbAuth.getCurrentUser().reauthenticate(creds).addOnCompleteListener(reauth ->  {
-            if (reauth.isSuccessful()) {
-                fbAuth.getCurrentUser().reload();
-                try {
-                    String newEmail = emailInput.getText().toString();
-                    fbAuth.getCurrentUser().verifyBeforeUpdateEmail(newEmail).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "HACER QUE FUNCIONE", Toast.LENGTH_SHORT).show(); //TODO hacer que funcione
-/*
-                            Toast.makeText(this, "Se ha cambiado el email con éxito", Toast.LENGTH_SHORT).show();
-*/
-                        } else {
-                            Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } catch (IllegalStateException | IllegalArgumentException e) {
-                    Toast.makeText(this, "No se ha rellenado el campo", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "No se ha podido autenticar el usuario", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void updatePass(View v) {
@@ -148,39 +126,16 @@ public class AjustesActivity extends AppCompatActivity {
     }
 
     public void borrarCuenta(View v) {
-        fbAuth.getCurrentUser().delete();
-        db.collection("users").document(email).delete();
-        Intent i = new Intent(this, LoginActivity.class);
-        startActivity(i);
-        finish();
-    }
-
-/*
-    public void goto_Activity(View v) {
-        Class clase = null;
-        int id = v.getId();
-        if (id == R.id.sett_changeSharedData) {
-            clase = SharedDataActivity.class;
-        } else if (id == R.id.sett_SelectUserAddUser) {
-            clase = AddFriendActivity.class;
-        } else if (id == R.id.backBut) {
-            email = emailOG;
-            usuario = usuarioOG;
-            password = passwordOG;
-            clase = MainActivity.class;
-        } else if (id == R.id.confirmBut) {
-            clase = MainActivity.class;
-        }
-        if (clase.getClass() != null) {
-            Intent i = new Intent(this, clase.getClass());
-            i.putExtra("email", email);
-            i.putExtra("usuario", usuario);
-            i.putExtra("password", password);
+        try {
+            fbAuth.getCurrentUser().delete();
+            db.collection("users").document(email).delete();
+            Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
             finish();
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
         }
     }
-*/
 
     public void goto_AddFriend(View v) {
         Intent i = new Intent(this, AddFriendActivity.class);

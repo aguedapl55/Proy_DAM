@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Funcionalidad;
+package fp.dam.proy.proy_dam.Principal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -41,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
         try {
             email = getIntent().getExtras().getString("email");
             password = getIntent().getExtras().getString("password");
-        } catch (NullPointerException e) {}
-        usuario = getIntent().getExtras().getString("usuario");
+            usuario = getIntent().getExtras().getString("usuario");
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
         Log.wtf("APL USUARIO MAIN", usuario);
         Log.wtf("APL EMAIL MAIN", email);
 
@@ -94,30 +96,35 @@ public class MainActivity extends AppCompatActivity {
             Log.wtf("APL email == usuario", "true");
             goto_AddSmth(v);
         } else {
-            Log.wtf("APL email == usuario", "false");
-            db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    String[] hijos = task.getResult().get("hijos").toString()
-                            .replace("[", "")
-                            .replace("]", "")
-                            .split(", ");
-                    boolean auxToast = true;
-                    for (String s : hijos) {
-                        Log.wtf("APL email", email);
-                        Log.wtf("APL s hijos", s);
-                        Log.wtf("APL s equals email", s.equals(email) ? "true" : "false");
-                        if (s.equals(email)) {
-                            auxToast = false;
-                            goto_AddSmth(v);
-                            break;
+            try {
+                Log.wtf("APL email == usuario", "false");
+                db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String[] hijos = task.getResult().get("hijos").toString()
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(", ");
+                        boolean auxToast = true;
+                        for (String s : hijos) {
+                            Log.wtf("APL email", email);
+                            Log.wtf("APL s hijos", s);
+                            Log.wtf("APL s equals email", s.equals(email) ? "true" : "false");
+                            if (s.equals(email)) {
+                                auxToast = false;
+                                goto_AddSmth(v);
+                                break;
+                            }
                         }
+                        if (auxToast)
+                            Toast.makeText(this, "No tienes permisos para realizar esta acción", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.wtf("APL TASK FAIL ADDSTH", task.getException());
+                        Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                     }
-                    if (auxToast) Toast.makeText(this, "No tienes permisos para realizar esta acción", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.wtf("APL TASK FAIL ADDSTH", task.getException());
-                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
-                }
-            });
+                });
+            } catch (NullPointerException e) {
+                Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            }
         }
     }
 

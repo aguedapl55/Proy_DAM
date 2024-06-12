@@ -46,7 +46,9 @@ public class EstadisticasFrag extends Fragment {
         try {
             email = getArguments().getString("email");
             usuario = getArguments().getString("usuario");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
         db = FirebaseFirestore.getInstance();
     }
 
@@ -68,33 +70,37 @@ public class EstadisticasFrag extends Fragment {
             setupStats();
         }
         else {
-            db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
-                List<String> usersAccesibles = new ArrayList<>();
-                DocumentSnapshot doc = task.getResult();
-                usersAccesibles.addAll(Arrays.asList(
-                        doc.get("hijos").toString()
-                                .replace("[", "")
-                                .replace("]", "")
-                                .split(", ")));
-                usersAccesibles.removeIf(d -> d.equals(""));
-                Log.wtf("APL usersAccesibles.contains(email)", "" + usersAccesibles.contains(email));
-                if (usersAccesibles.contains(email))
+            try {
+                db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+                    List<String> usersAccesibles = new ArrayList<>();
+                    DocumentSnapshot doc = task.getResult();
+                    usersAccesibles.addAll(Arrays.asList(
+                            doc.get("hijos").toString()
+                                    .replace("[", "")
+                                    .replace("]", "")
+                                    .split(", ")));
+                    usersAccesibles.removeIf(d -> d.equals(""));
+                    Log.wtf("APL usersAccesibles.contains(email)", "" + usersAccesibles.contains(email));
+                    if (usersAccesibles.contains(email))
 //                    rellenarRV(rv);
-                    setupStats();
-                else {
-                    db.collection("users").document(email).get().addOnCompleteListener(task2 -> {
-                        Map<String, Boolean> mapa = (Map<String, Boolean>) task2.getResult().get("visibilidad");
-                        boolean valor = mapa.containsKey("cuentas") ? mapa.get("cuentas") : false;
-                        Log.wtf("APL mapa.get(cuentas)", "" + mapa.get("cuentas") + "; valor = " + valor);
-                        if (valor)
+                        setupStats();
+                    else {
+                        db.collection("users").document(email).get().addOnCompleteListener(task2 -> {
+                            Map<String, Boolean> mapa = (Map<String, Boolean>) task2.getResult().get("visibilidad");
+                            boolean valor = mapa.containsKey("cuentas") ? mapa.get("cuentas") : false;
+                            Log.wtf("APL mapa.get(cuentas)", "" + mapa.get("cuentas") + "; valor = " + valor);
+                            if (valor)
 //                            rellenarRV(rv);
-                            setupStats();
-                        else {
-                            Toast.makeText(getContext(), "No tienes acceso a los datos", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            });
+                                setupStats();
+                            else {
+                                Toast.makeText(getContext(), "No tienes acceso a los datos", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            }
         }
     }
 
@@ -118,144 +124,34 @@ public class EstadisticasFrag extends Fragment {
 
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                int iteraciones = 0;
-                boolean esTrans = task.getResult().getDocuments().get(task.getResult().size()-1).contains("dinero");
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    if (esTrans) { //Transacciones
-                        floats.add(Float.parseFloat(document.getDouble("dinero").toString()));
+                try {
+                    int iteraciones = 10;
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (document.contains("dinero")) { //Transacciones
+                            floats.add(Float.parseFloat(document.getDouble("dinero").toString()));
 
-                    } else { //CategoriasCuentas
-                        floats.add(Float.parseFloat(document.getDouble("gastos").toString()));
+                        } else { //CategoriasCuentas
+                            floats.add(Float.parseFloat(document.getDouble("gastos").toString()));
+                        }
+
+                        if (iteraciones-- <= 0) break;
                     }
+                    for (int i = 0; i < floats.size(); i++)
+                        entries.add(new BarEntry(i, floats.get(i)));
 
-                    if (iteraciones++ >= 10) break;
+                    BarDataSet set = new BarDataSet(entries, "");
+                    set.setColors(new int[]{R.color.accentPrimary, R.color.darkAccentPrimary}, getContext());
+                    BarData data = new BarData(set);
+                    data.setBarWidth(0.9f); // set custom bar width
+                    barChart.setData(data);
+                    barChart.setFitBars(true); // make the x-axis fit exactly all bars
+                    barChart.setTouchEnabled(false);
+                    barChart.invalidate(); // refresh
+                } catch (NullPointerException e) {
+                    Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
                 }
-                for (int i = 0; i < floats.size(); i++)
-                    entries.add(new BarEntry(i, floats.get(i)));
-
-                BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                BarData data = new BarData(set);
-                data.setBarWidth(0.9f); // set custom bar width
-                barChart.setData(data);
-                barChart.setFitBars(true); // make the x-axis fit exactly all bars
-                barChart.invalidate(); // refresh
             }
         });
     }
-
-    // metodos individuales antiguos
-    /*
-    private void rellenarStatsMonth() {
-        List<BarEntry> entries = new ArrayList<>();
-        List<Float> floats = new ArrayList<>();
-        List<Transacciones> trans = new ArrayList<>();
-
-        db.collection("users").document(email).collection("transacciones").orderBy("fecha", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
-                        int iteraciones = 0;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Transacciones t = document.toObject(Transacciones.class);
-                            trans.add(t);
-                            if (iteraciones >= 10)
-                                break;
-                            iteraciones++;
-                        }
-
-                        trans.forEach(t -> floats.add(Float.parseFloat(String.valueOf(t.getDinero()))));
-                        for (int i = 0; i<trans.size(); i++)
-                            entries.add(new BarEntry(i, floats.get(i)));
-
-                        BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                        BarData data = new BarData(set);
-                        data.setBarWidth(0.9f); // set custom bar width
-                        dineroMonth.setData(data);
-                        dineroMonth.setFitBars(true); // make the x-axis fit exactly all bars
-                        dineroMonth.invalidate(); // refresh
-                    } else
-                        Log.wtf("APL TASK FAILED", task.getException());
-                });
-    }
-
-    private void rellenarStatsCategorias() {
-        List<BarEntry> entries = new ArrayList<>();
-        List<Float> floats = new ArrayList<>();
-        List<CategoriasCuentas> categorias = new ArrayList<>();
-
-        db.collection("users").document(email).collection("categorias").orderBy("nombre", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
-                        int iteraciones = 0;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            CategoriasCuentas c = new CategoriasCuentas(
-                                    document.getString("nombre"),
-                                    document.getString("icon"),
-                                    document.getDouble("gastos"),
-                                    document.getDouble("budget")
-                            );
-                            categorias.add(c);
-                            if (iteraciones >= 10)
-                                break;
-                            iteraciones++;
-                        }
-
-                        categorias.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getGastos()))));
-                        for (int i = 0; i<categorias.size(); i++)
-                            entries.add(new BarEntry(i, floats.get(i)));
-
-                        BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                        BarData data = new BarData(set);
-                        data.setBarWidth(0.9f); // set custom bar width
-                        dineroCategorias.setData(data);
-                        dineroCategorias.setFitBars(true); // make the x-axis fit exactly all bars
-                        dineroCategorias.invalidate(); // refresh
-                    } else
-                        Log.wtf("APL TASK FAILED", task.getException());
-                });
-    }
-
-    private void rellenarStatsCuentas() {
-        List<BarEntry> entries = new ArrayList<>();
-        List<Float> floats = new ArrayList<>();
-        List<CategoriasCuentas> cuentas = new ArrayList<>();
-
-        db.collection("users").document(email).collection("cuentas").orderBy("gastos", Query.Direction.DESCENDING)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        //int size = (task.getResult().size() < 10) ? task.getResult().size() : 10;
-                        int iteraciones = 0;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            CategoriasCuentas c = new CategoriasCuentas(
-                                    document.getString("nombre"),
-                                    "",
-                                    document.getDouble("gastos"),
-                                    0.0
-                            );
-                            cuentas.add(c);
-                            if (iteraciones >= 10)
-                                break;
-                            iteraciones++;
-                        }
-
-                        cuentas.forEach(d -> floats.add(Float.parseFloat(String.valueOf(d.getGastos()))));
-                        for (int i = 0; i<cuentas.size(); i++)
-                            entries.add(new BarEntry(i, floats.get(i)));
-
-                        BarDataSet set = new BarDataSet(entries, "BarDataSet");
-                        BarData data = new BarData(set);
-                        data.setBarWidth(0.9f); // set custom bar width
-                        dineroCuentas.setData(data);
-                        dineroCuentas.setFitBars(true); // make the x-axis fit exactly all bars
-                        dineroCuentas.invalidate(); // refresh
-                    } else
-                        Log.wtf("APL TASK FAILED", task.getException());
-                });
-    }
-*/
 
 }

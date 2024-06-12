@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class CategoriasFrag extends Fragment {
     private String email, usuario;
     private FirebaseFirestore db;
     private RecyclerView rv;
+    private TextView taskSize;
     private List<CategoriasCuentas> categorias;
 
     public CategoriasFrag() {}
@@ -69,6 +71,7 @@ public class CategoriasFrag extends Fragment {
         CatCtaAdapter adapter = new CatCtaAdapter(categorias);
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
+        taskSize = rootView.findViewById(R.id.taskSize);
         return rootView;
     }
 
@@ -114,6 +117,10 @@ public class CategoriasFrag extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
+                            if (task.getResult().size() == 0)
+                                taskSize.setText("Aún no has añadido ninguna categoría");
+                            else
+                                taskSize.setText("");
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("nombre") && document.contains("gastos")) {
                                     CategoriasCuentas cat = new CategoriasCuentas(

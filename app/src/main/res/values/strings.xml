@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Proy_DAM</string>
+    <string name="app_name">Gestión de Dinero</string>
 
     <!--BOTTOM NAV-->
     <string name="cuentas">Cuentas</string>
@@ -36,5 +36,11 @@
     <string name="sett_addChild">Añadir Hijo</string>
     <string name="friend_addEmail">AÑADIR EMAIL</string>
     <string name="shared_datos_compartidos">Datos compartidos</string>
+    <string name="nombre">Nombre</string>
+    <string name="dinero_gastado">Dinero gastado</string>
+    <string name="budget_mensual">Budget mensual</string>
+    <string name="codigo_5nums">Código (5 numeros)</string>
+    <string name="control_parental">Control parental</string>
+    <string name="tus_datos">Tus datos:</string>
 
 </resources>

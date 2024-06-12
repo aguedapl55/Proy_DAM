@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Funcionalidad;
+package fp.dam.proy.proy_dam.Principal;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Funcionalidad;
+package fp.dam.proy.proy_dam.Principal;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,7 +37,9 @@ public class AddFriendActivity extends AppCompatActivity {
             email = getIntent().getExtras().getString("email");
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
 
         emailInput = findViewById(R.id.friend_inputEmail);
         codeInput = findViewById(R.id.friend_inputCode);
@@ -48,12 +50,15 @@ public class AddFriendActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         emailDisplay.setText(usuario);
 
-        db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
-            int code = (int) Math.floor(Double.parseDouble(task.getResult().getDouble("code").toString()));
-            emailDisplay.setText(String.format("5f", Double.toString(code)));
-        });
-
-
+        try {
+            db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+                int code = (int) Math.floor(Double.parseDouble(task.getResult().getDouble("code").toString()));
+                codeDisplay.setText(String.valueOf(code));
+//            codeDisplay.setText(String.format("%5d", code));
+            });
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
     }
 
     public void confirm(View v) {
@@ -78,45 +83,51 @@ public class AddFriendActivity extends AppCompatActivity {
                 });
         } catch (NumberFormatException e) {
             Toast.makeText(this, "No se han añadido todos los datos", Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
         }
     }
 
     private void addUsuario(View v, String emailF) {
-        db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<String> added = new ArrayList<>();
-                added.addAll(Arrays.asList(task.getResult().get("vinculadas").toString()
-                        .replace("[", "")
-                        .replace("]", "")
-                        .split(", ")));
-                Log.wtf("APL aaa", "aaa");
-                added.addAll(Arrays.asList(task.getResult().get("hijos").toString()
-                        .replace("[", "")
-                        .replace("]", "")
-                        .split(", ")));
-                added.removeIf(d -> d.equals(""));
-
-                if (added.contains(emailF))
-                    Toast.makeText(this, "El usuario indicado ya está vinculado a esta cuenta", Toast.LENGTH_SHORT).show();
-                else {
-                    ArrayList<String> cuentas = new ArrayList<>();
-                    String field = isChildSwitch.isChecked() ? "hijos" : "vinculadas";
-                    cuentas.addAll(Arrays.asList(task.getResult().get(field).toString()
+        List<String> added = new ArrayList<>();
+        try {
+            db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    added.addAll(Arrays.asList(task.getResult().get("vinculadas").toString()
                             .replace("[", "")
                             .replace("]", "")
                             .split(", ")));
-                    cuentas.add(emailF);
+                    Log.wtf("APL aaa", "aaa");
+                    added.addAll(Arrays.asList(task.getResult().get("hijos").toString()
+                            .replace("[", "")
+                            .replace("]", "")
+                            .split(", ")));
+                    added.removeIf(d -> d.equals(""));
+
+                    if (added.contains(emailF))
+                        Toast.makeText(this, "El usuario indicado ya está vinculado a esta cuenta", Toast.LENGTH_SHORT).show();
+                    else {
+                        ArrayList<String> cuentas = new ArrayList<>();
+                        String field = isChildSwitch.isChecked() ? "hijos" : "vinculadas";
+                        cuentas.addAll(Arrays.asList(task.getResult().get(field).toString()
+                                .replace("[", "")
+                                .replace("]", "")
+                                .split(", ")));
+                        cuentas.add(emailF);
 /*
                     db.collection("users").document(usuario).update(field, added);
 */
-                    db.collection("users").document(usuario).update(field, cuentas).addOnCompleteListener(complete -> {
-                        if (complete.isSuccessful())
-                            Toast.makeText(getApplicationContext(), "Se ha añadido el usuario", Toast.LENGTH_SHORT).show();
-                    });
-                    exit(v);
+                        db.collection("users").document(usuario).update(field, cuentas).addOnCompleteListener(complete -> {
+                            if (complete.isSuccessful())
+                                Toast.makeText(getApplicationContext(), "Se ha añadido el usuario", Toast.LENGTH_SHORT).show();
+                        });
+                        exit(v);
+                    }
                 }
-            }
-        });
+            });
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
     }
 
     public void exit(View v) {

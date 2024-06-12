@@ -1,8 +1,16 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Proy_DAM" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:background">@color/lightPrimary</item>
+        <item name="colorPrimaryDark">@color/darkPrimary</item>
+        <item name="colorAccent">@color/darkAccentPrimary</item>
+        <item name="colorPrimary">@color/darkAccentPrimary</item>
+        <item name="android:tint">@color/darkPrimary</item>
+        <item name="android:textColor">@color/darkPrimary</item>
+
+
     </style>
 
     <style name="Theme.Proy_DAM" parent="Base.Theme.Proy_DAM" />

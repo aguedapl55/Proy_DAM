@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+<!--    https://coolors.co/1a2130-697ea5-b0c3eb-fdffe2-->
+    <color name="darkPrimary">#FF1A2130</color>
+    <color name="darkAccentPrimary">#FF697EA5</color>
+    <color name="accentPrimary">#FFB0C3EB</color>
+    <color name="lightPrimary">#FFEDEEFA</color>
 </resources>

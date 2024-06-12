@@ -20,15 +20,16 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.type.Date;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import fp.dam.proy.proy_dam.CategoriasCuentas.CategoriasCuentas;
-import fp.dam.proy.proy_dam.Funcionalidad.MainActivity;
+import fp.dam.proy.proy_dam.Principal.MainActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class AddTransaccionActivity extends AppCompatActivity {
@@ -118,74 +119,78 @@ public class AddTransaccionActivity extends AppCompatActivity {
     }
 
     private void actualizarCatCta(View view, Double dinero) {
-        Date fecha = Date.newBuilder().setDay(1)
-                .setMonth(Calendar.getInstance().get(Calendar.MONTH))
-                .setYear(Calendar.getInstance().get(Calendar.YEAR))
-                .build();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)-1 < 0 ? 12 : calendar.get(Calendar.MONTH) - 1, 1);
+        Date fecha = calendar.getTime();
+
+        Log.wtf("APL date", fecha.getDay() + "/" + fecha.getMonth() + "/" + fecha.getYear());
         CollectionReference colrefCats = db.collection("users").document(email).collection("categorias");
+        CollectionReference colrefCtas = db.collection("users").document(email).collection("cuentas");
         colrefCats.get().addOnCompleteListener(taskCats -> {
-            CollectionReference colrefCtas = db.collection("users").document(email).collection("cuentas");
             colrefCtas.get().addOnCompleteListener(taskCtas -> {
-               if (taskCats.isSuccessful() && taskCtas.isSuccessful()) {
-                   //Categorias
-                   for (DocumentSnapshot doc : taskCats.getResult().getDocuments()) {
-                       if (doc.get("nombre").toString().equals(categoria)) {
-                           CategoriasCuentas cat = new CategoriasCuentas(
-                                   doc.getString("nombre"),
-                                   doc.getDouble("gastos"),
-                                   doc.getDouble("gastoMens"),
-                                   doc.getDouble("budget"));
-                           double aux = db.collection("users").document(email).collection("transacciones")
-                                   .whereEqualTo("categoria", doc.getString("nombre"))
-                                   .whereEqualTo("fecha", fecha)
-                                   .get().getResult().getDocuments().stream().mapToDouble(d -> d.getDouble("dinero")).sum();
-                           if (cat.getGastoMens() != aux)
-                               cat.setGastoMens(aux);
-                           colrefCats.document(doc.getId()).update("gastos", cat.getGastos() + dinero);
-                           colrefCats.document(doc.getId()).update("gastoMens", cat.getGastoMens() + dinero);
-                           break;
-                       }
-                   }
+                if (taskCats.isSuccessful() && taskCtas.isSuccessful()) {
+                    //Categorias
+                    for (DocumentSnapshot doc : taskCats.getResult().getDocuments()) {
+                        if (doc.get("nombre").toString().equals(categoria)) {
+                            CategoriasCuentas cat = new CategoriasCuentas(
+                                    doc.getString("nombre"),
+                                    doc.getDouble("gastos"),
+                                    doc.getDouble("gastoMens"),
+                                    doc.getDouble("budget"));
 
-                   for (DocumentSnapshot doc : taskCtas.getResult().getDocuments()) {
-                       if (doc.get("nombre").toString().equals(cuenta)) {
-                           CategoriasCuentas cta = new CategoriasCuentas(
-                                   doc.getString("nombre"),
-                                   doc.getDouble("gastos"),
-                                   doc.getDouble("gastoMens"),
-                                   doc.getDouble("budget"));
-                           double aux = db.collection("users").document(email).collection("transacciones")
-                                   .whereEqualTo("cuenta", doc.getString("nombre"))
-                                   .whereGreaterThanOrEqualTo("fecha", fecha)
-                                   .get().getResult().getDocuments().stream().mapToDouble(d -> d.getDouble("dinero")).sum();
-                           if (cta.getGastoMens() != aux)
-                               cta.setGastoMens(aux);
-                           colrefCats.document(doc.getId()).update("gastos", cta.getGastos() + dinero);
-                           colrefCats.document(doc.getId()).update("gastoMens", cta.getGastoMens() + dinero);
-                           break;
-                       }
-                   }
+                            Query qTrans = db.collection("users").document(email).collection("transacciones")
+                                    .whereEqualTo("categoria", doc.getString("nombre"))
+                                    .orderBy("fecha");
+                            qTrans.get().addOnCompleteListener(taskTrans -> {
+                                if (taskTrans.isSuccessful()) {
+                                    List<DocumentSnapshot> mensual = new ArrayList<>();
+                                    for (DocumentSnapshot transDoc : taskTrans.getResult())
+                                        if (transDoc.getDate("fecha").compareTo(fecha) < 31)
+                                            mensual.add(transDoc);
+                                    double aux = mensual.stream().mapToDouble(d -> d.getDouble("dinero")).sum();
+                                    if (cat.getGastoMens() != aux)
+                                        cat.setGastoMens(aux);
 
-                   //Cuentas
-                   for (DocumentSnapshot doc : taskCtas.getResult().getDocuments()) {
-                       if (doc.get("nombre").toString().equals(cuenta)) {
-                           CategoriasCuentas cta = new CategoriasCuentas(
-                                   doc.getString("nombre"),
-                                   doc.getDouble("gastos"),
-                                   doc.getDouble("gastoMens"),
-                                   doc.getDouble("budget"));
-                           double aux = db.collection("users").document(email).collection("transacciones")
-                                   .whereEqualTo("cuenta", doc.getString("nombre"))
-                                   .whereEqualTo("fecha", fecha)
-                                   .get().getResult().getDocuments().stream().mapToDouble(d -> d.getDouble("dinero")).sum();
-                           if (cta.getGastoMens() != aux)
-                               cta.setGastoMens(aux);
-                           colrefCtas.document(doc.getId()).update("gastos", cta.getGastos() + dinero);
-                           colrefCtas.document(doc.getId()).update("gastoMens", cta.getGastoMens() + dinero);
-                           break;
-                       }
-                   }
-               }
+                                }
+                            });
+
+                            colrefCats.document(doc.getId()).update("gastos", cat.getGastos() + dinero);
+                            colrefCats.document(doc.getId()).update("gastoMens", cat.getGastoMens() + dinero);
+                            break;
+                        }
+                    }
+
+                    //Cuentas
+                    for (DocumentSnapshot doc : taskCtas.getResult().getDocuments()) {
+                        if (doc.get("nombre").toString().equals(cuenta)) {
+                            CategoriasCuentas cta = new CategoriasCuentas(
+                                    doc.getString("nombre"),
+                                    doc.getDouble("gastos"),
+                                    doc.getDouble("gastoMens"),
+                                    doc.getDouble("budget"));
+
+                            Query qTrans = db.collection("users").document(email).collection("transacciones")
+                                    .whereEqualTo("categoria", doc.getString("nombre"))
+                                    .orderBy("fecha");
+                            qTrans.get().addOnCompleteListener(taskTrans -> {
+                                if (taskTrans.isSuccessful()) {
+                                    List<DocumentSnapshot> mensual = new ArrayList<>();
+                                    for (DocumentSnapshot transDoc : taskTrans.getResult())
+                                        if (transDoc.getDate("fecha").compareTo(fecha) < 31)
+                                            mensual.add(transDoc);
+                                    double aux = mensual.stream().mapToDouble(d -> d.getDouble("dinero")).sum();
+                                    if (cta.getGastoMens() != aux)
+                                        cta.setGastoMens(aux);
+
+                                }
+                            });
+
+                            colrefCtas.document(doc.getId()).update("gastos", cta.getGastos() + dinero);
+                            colrefCtas.document(doc.getId()).update("gastoMens", cta.getGastoMens() + dinero);
+                            break;
+                        }
+                    }
+                }
             });
         });
     }

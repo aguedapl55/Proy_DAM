@@ -1,11 +1,11 @@
 package fp.dam.proy.proy_dam.Transacciones;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -23,18 +22,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import fp.dam.proy.proy_dam.Funcionalidad.AddFriendActivity;
 import fp.dam.proy.proy_dam.R;
 
 public class TransaccionesFrag extends Fragment {
     private String email, usuario;
     private FirebaseFirestore db;
     private RecyclerView rv;
+    TextView taskSize;
     private List<Transacciones> transacciones;
 
     public TransaccionesFrag() {}
@@ -70,6 +68,7 @@ public class TransaccionesFrag extends Fragment {
             adapter.notifyDataSetChanged();
             rv.setAdapter(adapter);
         } catch (NullPointerException e) {}
+        taskSize = rootView.findViewById(R.id.taskSize);
         return rootView;
     }
 
@@ -115,6 +114,10 @@ public class TransaccionesFrag extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
+                            if (task.getResult().size() == 0)
+                                taskSize.setText("Aún no has añadido ninguna transacción");
+                            else
+                                taskSize.setText("");
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("dinero")) {
                                     Transacciones trans = new Transacciones(

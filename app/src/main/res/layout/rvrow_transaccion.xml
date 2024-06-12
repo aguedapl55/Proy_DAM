@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:ems="5"
             android:textSize="20sp"
-            android:text="DINERO"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="5dp"
             />
@@ -35,14 +34,12 @@
                 android:id="@+id/transRV_TxtCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CATEGORIA"
                 />
 
             <TextView
                 android:id="@+id/transRV_TxtCuenta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CUENTA"
                 />
         </LinearLayout>
 
@@ -54,8 +51,12 @@
         android:id="@+id/transRV_TxtComentario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="COMENTARIO"
 
+        />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         />
 
 </LinearLayout>

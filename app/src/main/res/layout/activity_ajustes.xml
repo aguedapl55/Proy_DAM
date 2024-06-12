@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Funcionalidad.AjustesActivity">
+    tools:context=".Principal.AjustesActivity">
 
     <LinearLayout
         android:id="@+id/linlayout"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@id/linlayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
         />
 
     <Button
@@ -88,28 +88,16 @@
         />
 
     <EditText
-        android:id="@+id/sett_NewUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="7"
-        android:inputType="textEmailAddress"
-        android:hint="Email"
-        app:layout_constraintBottom_toTopOf="@+id/sett_UDUser"
-        app:layout_constraintEnd_toStartOf="@+id/sett_ConfPass"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="25dp"/>
-
-    <EditText
         android:id="@+id/sett_NewPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="7"
         android:inputType="textPassword"
         android:hint="Contraseña"
-        app:layout_constraintBottom_toTopOf="@+id/sett_ConfPass"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sett_NewUser"
-        android:layout_marginBottom="25dp"
+        app:layout_constraintTop_toBottomOf="@id/sett_SelectUserAddUser"
+        android:layout_marginTop="75dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sett_ConfPass"
         />
 
     <EditText
@@ -118,22 +106,12 @@
         android:layout_height="wrap_content"
         android:ems="7"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/sett_UDPass"
+        app:layout_constraintTop_toBottomOf="@id/sett_SelectUserAddUser"
+        android:layout_marginTop="75dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sett_NewUser"
+        app:layout_constraintStart_toEndOf="@+id/sett_NewPass"
         android:layout_marginBottom="25dp"
         android:hint="Confirmar contraseña"/>
-
-    <Button
-        android:id="@+id/sett_UDUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cambiar email"
-        android:onClick="updateUser"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/sett_BorrarCuenta"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="150dp"/>
 
     <Button
         android:id="@+id/sett_UDPass"
@@ -141,10 +119,10 @@
         android:layout_height="wrap_content"
         android:text="Cambiar contraseña"
         android:onClick="updatePass"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sett_NewPass"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sett_SignOut"
-        android:layout_marginBottom="150dp"/>
+        android:layout_marginTop="25dp"/>
 
     <Button
         android:id="@+id/sett_SignOut"

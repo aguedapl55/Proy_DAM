@@ -1,7 +1,14 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Proy_DAM" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:background">@color/darkPrimary</item>
+        <item name="colorPrimaryDark">@color/lightPrimary</item>
+        <item name="colorAccent">@color/accentPrimary</item>
+        <item name="colorPrimary">@color/accentPrimary</item>
+        <item name="android:tint">@color/lightPrimary</item>
+        <item name="android:textColor">@color/lightPrimary</item>
+
     </style>
 </resources>

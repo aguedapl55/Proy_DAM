@@ -4,21 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Funcionalidad.SignUpActivity">
+    tools:context=".Principal.SignUpActivity">
 
     <ImageButton
         android:id="@+id/supBtnBack"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="30dp"
+        android:layout_height="33dp"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:contentDescription="@string/Back_Arrow"
+        android:onClick="goto_login"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="15dp"
-        app:srcCompat="@drawable/arrow_back"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        android:onClick="goto_login"
-        android:contentDescription="@string/Back_Arrow"
-        />
+        app:srcCompat="@drawable/arrow_back" />
 
     <EditText
         android:id="@+id/supEdtUsuario"

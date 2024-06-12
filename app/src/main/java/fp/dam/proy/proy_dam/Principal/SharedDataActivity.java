@@ -1,4 +1,4 @@
-package fp.dam.proy.proy_dam.Funcionalidad;
+package fp.dam.proy.proy_dam.Principal;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,12 +31,26 @@ public class SharedDataActivity extends AppCompatActivity {
             email = getIntent().getExtras().getString("email");
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
-        } catch (NullPointerException e) {}
+        } catch (NullPointerException e) {
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+        }
 
         ctasSW = findViewById(R.id.shared_cuentasSW);
         catsSW = findViewById(R.id.shared_categoriasSW);
         transSW = findViewById(R.id.shared_transSW);
         statsSW = findViewById(R.id.shared_statsSW);
+
+        db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
+           Map<String, Boolean> valores = (Map<String, Boolean>) task.getResult().get("visibilidad");
+           try {
+               ctasSW.setChecked(valores.get("cuentas"));
+               catsSW.setChecked(valores.get("categorias"));
+               transSW.setChecked(valores.get("transacciones"));
+               statsSW.setChecked(valores.get("estadisticas"));
+           } catch (NullPointerException e) {
+               Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+           }
+        });
     }
 
     public void confirm(View v) {
