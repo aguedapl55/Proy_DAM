@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="5"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="5dp"
             />
@@ -34,12 +34,14 @@
                 android:id="@+id/transRV_TxtCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
                 />
 
             <TextView
                 android:id="@+id/transRV_TxtCuenta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="15sp"
                 />
         </LinearLayout>
 
