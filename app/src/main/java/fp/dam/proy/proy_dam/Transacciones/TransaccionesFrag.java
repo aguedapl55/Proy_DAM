@@ -115,7 +115,7 @@ public class TransaccionesFrag extends Fragment {
                         if (task.isSuccessful()) {
                             Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                             if (task.getResult().size() == 0)
-                                taskSize.setText("Aún no has añadido ninguna transacción");
+                                taskSize.setText("Aún no has añadido\nninguna transacción");
                             else
                                 taskSize.setText("");
                             for (QueryDocumentSnapshot document : task.getResult()) {

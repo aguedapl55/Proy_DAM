@@ -58,7 +58,7 @@ public class AddCategoriaActivity extends AppCompatActivity {
             dinero = dineroMens = Double.parseDouble(dineroTxt.getText().toString());
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
-            if (nombre.isEmpty())
+            if (nombre.isEmpty() || dinero == 0.0)
                 throw new IllegalArgumentException();
             CategoriasCuentas categoria = new CategoriasCuentas(email,
                     db.collection("users").document(email).collection("cuentas").document().getId(),

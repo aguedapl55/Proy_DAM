@@ -167,6 +167,15 @@ public class AjustesActivity extends AppCompatActivity {
         finish();
     }
 
+    public void goto_About(View v) {
+        Intent i = new Intent(this, AboutActivity.class);
+        i.putExtra("email", email);
+        i.putExtra("usuario", usuario);
+        i.putExtra("password", password );
+        startActivity(i);
+        finish();
+    }
+
     public void revert(View v) {
         email = emailOG; usuario = usuarioOG; password = passwordOG;
         exit(v);

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
         Log.wtf("APL USUARIO MAIN", usuario);
         Log.wtf("APL EMAIL MAIN", email);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment); //cambia al fragmento seleccionado
-        transaction.setReorderingAllowed(true); // optimiza cambios estados fragmentos -> animaciones mejores -> TODO mirar animaciones
+        transaction.setReorderingAllowed(true); // optimiza cambios estados fragmentos
         transaction.addToBackStack(null); //atras tecla movil -> vuelve al fragmento anterior
         transaction.commit();
     }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             } catch (NullPointerException e) {
-                Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
             }
         }
     }

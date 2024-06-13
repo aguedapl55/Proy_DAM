@@ -94,7 +94,6 @@ public class CuentasFrag extends Fragment {
                 Log.wtf("APL usersAccesibles.contains(email)", "" + usersAccesibles.contains(email));
                 if (usersAccesibles.contains(email)) {
                     rellenarRV(rv);
-//                    mensOverBudget(rv);
                 }
                 else {
                     db.collection("users").document(email).get().addOnCompleteListener(task2 -> {
@@ -120,12 +119,11 @@ public class CuentasFrag extends Fragment {
                     if (task.isSuccessful()) {
                         Log.wtf("APL TAMAÑO TASK", "" + task.getResult().size());
                         if (task.getResult().size() == 0)
-                            taskSize.setText("Aún no has añadido cuentas");
+                            taskSize.setText("Aún no has añadido\nninguna cuenta");
                         else
                             taskSize.setText("");
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if (document.contains("nombre") && document.contains("gastos")) {
-//                                CategoriasCuentas cta = document.toObject(CategoriasCuentas.class);
                                 CategoriasCuentas cta = new CategoriasCuentas(
                                         email,
                                         document.getId(),
@@ -171,24 +169,5 @@ public class CuentasFrag extends Fragment {
                     });
             constructor.create().show();
         }
-    }
-
-    public double getTransFechas(List<QueryDocumentSnapshot> documentos) {
-        List<Double> auxL = new ArrayList<>();
-        for (QueryDocumentSnapshot doc : documentos) {
-            Date fecha = Date.newBuilder().setDay(1)
-                    .setMonth(Calendar.getInstance().get(Calendar.MONTH))
-                    .setYear(Calendar.getInstance().get(Calendar.YEAR))
-                    .build();
-
-            db.collection("users").document(email).collection("transacciones")
-                    .whereEqualTo("cuenta", doc.getString("nombre"))
-                    .whereGreaterThanOrEqualTo("fecha", fecha)
-                    .get().getResult().getDocuments().forEach(d -> auxL.add(d.getDouble("dinero")));
-        }
-        double aux = 0;
-        for (Double d : auxL)
-            aux += d;
-        return aux;
     }
 }

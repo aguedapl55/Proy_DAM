@@ -13,7 +13,7 @@
     <string name="loginPasswordHint">Contraseña</string>
     <string name="loginLogin">Iniciar sesión</string>
     <string name="loginRegister">¿No tienes una cuenta?</string>
-    <string name="trans_addTrans">Añadir transacción</string>
+    <string name="trans_addTrans">Añadir operación</string>
 
     <!--SIGN UP-->
     <string name="signupRegister">Crear cuenta</string>
@@ -24,7 +24,7 @@
     <string name="Check">Confirmar</string>
     <string name="Back_Arrow">Ir atrás</string>
     <string name="add_element">Añadir elemento</string>
-    <string name="trans_NuevaTransaccion">NUEVA TRANSACCION</string>
+    <string name="trans_NuevaTransaccion">NUEVA OPERACIÓN</string>
     <string name="categoria">Categoria</string>
     <string name="cuenta">Cuenta</string>
     <string name="dinero">Dinero</string>
@@ -42,5 +42,11 @@
     <string name="codigo_5nums">Código (5 numeros)</string>
     <string name="control_parental">Control parental</string>
     <string name="tus_datos">Tus datos:</string>
+    <string name="borrar_cuenta">Borrar cuenta</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="logo_app">Logo de aplicación</string>
+    <string name="desarrollado_apl">Desarrollado por\nÁgueda Prieto LLamas</string>
+    <string name="proy_fin">Proyecto final CFGS DAM</string>
+    <string name="repo">Repositorio del proyecto</string>
 
 </resources>

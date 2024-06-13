@@ -47,7 +47,7 @@ public class EstadisticasFrag extends Fragment {
             email = getArguments().getString("email");
             usuario = getArguments().getString("usuario");
         } catch (NullPointerException e) {
-            Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
         db = FirebaseFirestore.getInstance();
     }
@@ -66,15 +66,13 @@ public class EstadisticasFrag extends Fragment {
     private void checkRellenar() {
         Log.wtf("APL usuario.equals(email)", "" + usuario.equals(email));
         if (usuario.equals(email)) {
-//            rellenarRV(rv);
             setupStats();
         }
         else {
             try {
                 db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
-                    List<String> usersAccesibles = new ArrayList<>();
                     DocumentSnapshot doc = task.getResult();
-                    usersAccesibles.addAll(Arrays.asList(
+                    List<String> usersAccesibles = new ArrayList<>(Arrays.asList(
                             doc.get("hijos").toString()
                                     .replace("[", "")
                                     .replace("]", "")
@@ -82,15 +80,13 @@ public class EstadisticasFrag extends Fragment {
                     usersAccesibles.removeIf(d -> d.equals(""));
                     Log.wtf("APL usersAccesibles.contains(email)", "" + usersAccesibles.contains(email));
                     if (usersAccesibles.contains(email))
-//                    rellenarRV(rv);
                         setupStats();
                     else {
                         db.collection("users").document(email).get().addOnCompleteListener(task2 -> {
                             Map<String, Boolean> mapa = (Map<String, Boolean>) task2.getResult().get("visibilidad");
-                            boolean valor = mapa.containsKey("cuentas") ? mapa.get("cuentas") : false;
+                            boolean valor = mapa.getOrDefault("cuentas", false);
                             Log.wtf("APL mapa.get(cuentas)", "" + mapa.get("cuentas") + "; valor = " + valor);
                             if (valor)
-//                            rellenarRV(rv);
                                 setupStats();
                             else {
                                 Toast.makeText(getContext(), "No tienes acceso a los datos", Toast.LENGTH_LONG).show();
@@ -99,7 +95,7 @@ public class EstadisticasFrag extends Fragment {
                     }
                 });
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+                Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -148,7 +144,7 @@ public class EstadisticasFrag extends Fragment {
                     barChart.setTouchEnabled(false);
                     barChart.invalidate(); // refresh
                 } catch (NullPointerException e) {
-                    Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+                    Toast.makeText(getContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
                 }
             }
         });

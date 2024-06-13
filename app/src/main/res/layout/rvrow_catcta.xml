@@ -17,14 +17,17 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/ccRV_dinero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ccRV_nombre"/>
+            app:layout_constraintTop_toBottomOf="@id/ccRV_nombre"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"/>
 
 <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 

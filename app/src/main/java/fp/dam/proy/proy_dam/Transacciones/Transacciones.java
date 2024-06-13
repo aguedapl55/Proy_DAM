@@ -20,15 +20,6 @@ public class Transacciones {
         this.comentario = comentario;
     }
 
-//    public Transacciones(Double dinero, Timestamp fecha, String categoria, String cuenta, String comentario) {
-//        this.dinero = dinero;
-//        this.fecha = fecha;
-//        this.categoria = categoria;
-//        this.cuenta = cuenta;
-//        this.comentario = comentario;
-//    }
-
-
     public String getId() {
         return id;
     }

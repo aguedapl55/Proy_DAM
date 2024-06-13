@@ -129,23 +129,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#FF2222"
-        android:text="Cerrar Sesión"
+        android:text="@string/cerrar_sesion"
         android:onClick="logOut"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sett_UDPass"
+        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toStartOf="@+id/sett_BorrarCuenta"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="50dp"/>
+        />
 
     <Button
         android:id="@+id/sett_BorrarCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#990000"
-        android:text="Borrar cuenta"
+        android:text="@string/borrar_cuenta"
         android:onClick="borrarCuenta"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sett_UDPass"
+        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sett_SignOut"
+        />
+
+    <Button
+        android:id="@+id/sett_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sobre la aplicación"
+        android:onClick="goto_About"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="50dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

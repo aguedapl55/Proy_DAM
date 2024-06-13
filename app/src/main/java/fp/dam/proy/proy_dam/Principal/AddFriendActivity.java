@@ -38,7 +38,7 @@ public class AddFriendActivity extends AppCompatActivity {
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
 
         emailInput = findViewById(R.id.friend_inputEmail);
@@ -53,11 +53,10 @@ public class AddFriendActivity extends AppCompatActivity {
         try {
             db.collection("users").document(usuario).get().addOnCompleteListener(task -> {
                 int code = (int) Math.floor(Double.parseDouble(task.getResult().getDouble("code").toString()));
-                codeDisplay.setText(String.valueOf(code));
-//            codeDisplay.setText(String.format("%5d", code));
+                codeDisplay.setText(String.valueOf(code).replace(".0", ""));
             });
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -84,7 +83,7 @@ public class AddFriendActivity extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Toast.makeText(this, "No se han añadido todos los datos", Toast.LENGTH_SHORT).show();
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -107,16 +106,12 @@ public class AddFriendActivity extends AppCompatActivity {
                     if (added.contains(emailF))
                         Toast.makeText(this, "El usuario indicado ya está vinculado a esta cuenta", Toast.LENGTH_SHORT).show();
                     else {
-                        ArrayList<String> cuentas = new ArrayList<>();
                         String field = isChildSwitch.isChecked() ? "hijos" : "vinculadas";
-                        cuentas.addAll(Arrays.asList(task.getResult().get(field).toString()
+                        ArrayList<String> cuentas = new ArrayList<>(Arrays.asList(task.getResult().get(field).toString()
                                 .replace("[", "")
                                 .replace("]", "")
                                 .split(", ")));
                         cuentas.add(emailF);
-/*
-                    db.collection("users").document(usuario).update(field, added);
-*/
                         db.collection("users").document(usuario).update(field, cuentas).addOnCompleteListener(complete -> {
                             if (complete.isSuccessful())
                                 Toast.makeText(getApplicationContext(), "Se ha añadido el usuario", Toast.LENGTH_SHORT).show();
@@ -126,7 +121,7 @@ public class AddFriendActivity extends AppCompatActivity {
                 }
             });
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
     }
 

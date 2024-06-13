@@ -86,23 +86,16 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, Object> transacciones = new HashMap<>();
         usuario.collection("transacciones").add(transacciones);
 
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "food", 0, 0, 0, true));
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "entertainment", 0, 0, 0, true));
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "transport", 0, 0, 0, true));
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "health", 0, 0, 0, true));
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "pets", 0, 0, 0, true));
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "family", 0, 0, 0, true));
-        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "clothes", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "food", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "entertainment", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "transport", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "health", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "pets", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "family", 0, 0, 0, true));
-//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "clothes", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Comida", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Entretenimiento", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Transporte", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Salud", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Mascotas", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Familia", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "Ropa", 0, 0, 0, true));
 
-        usuario.collection("cuentas").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("cuentas").document().getId(), "debit card", 0, 0, 0, false));
-        usuario.collection("cuentas").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("cuentas").document().getId(), "cash", 0, 0, 0, false));
+        usuario.collection("cuentas").add(new CategoriasCuentas(email, null, "Tarjeta de débito", 0, 0, 0, false));
+        usuario.collection("cuentas").add(new CategoriasCuentas(email, null, "Cartera", 0, 0, 0, false));
     }
 
     public void goto_login(View view) {

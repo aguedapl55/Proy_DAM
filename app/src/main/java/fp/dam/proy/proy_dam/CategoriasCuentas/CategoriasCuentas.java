@@ -18,14 +18,6 @@ public class CategoriasCuentas {
         this.isCategoria = isCategoria;
     }
 
-//    public CategoriasCuentas(String nombre, double gastos, double gastoMens, double budget) {
-//        this.nombre = nombre;
-//        this.gastos = gastos;
-//        this.gastoMens = gastos;
-//        this.budget = budget;
-//    }
-
-
     public String getId() {
         return id;
     }

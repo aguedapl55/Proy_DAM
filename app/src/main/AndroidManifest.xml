@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Proy_DAM"
         tools:targetApi="31">
         <activity
+            android:name=".Principal.AboutActivity"
+            android:exported="false" />
+        <activity
             android:name=".Principal.SharedDataActivity"
             android:exported="false" />
         <activity
