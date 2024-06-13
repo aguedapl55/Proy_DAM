@@ -69,7 +69,7 @@ public class CuentasFrag extends Fragment {
         rv = rootView.findViewById(R.id.ctaRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         checkRellenar();
-        CatCtaAdapter adapter = new CatCtaAdapter(cuentas);
+        CatCtaAdapter adapter = new CatCtaAdapter(cuentas, "cuentas");
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
         taskSize = rootView.findViewById(R.id.taskSize);
@@ -125,29 +125,15 @@ public class CuentasFrag extends Fragment {
                             taskSize.setText("");
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             if (document.contains("nombre") && document.contains("gastos")) {
-//                                    double aux = getTransFechas(task.getResult());
-//                                    Date fecha = Date.newBuilder().setDay(1)
-//                                            .setMonth(Calendar.getInstance().get(Calendar.MONTH))
-//                                            .setYear(Calendar.getInstance().get(Calendar.YEAR))
-//                                            .build();
-//                                    List<Double> auxL = new ArrayList<>();
-//                                    usuario.collection("transacciones")
-//                                            .whereEqualTo("cuenta", document.getString("nombre"))
-//                                            .whereGreaterThanOrEqualTo("fecha", fecha)
-//                                            .get().getResult().getDocuments().forEach(d -> auxL.add(d.getDouble("dinero")));
-//                                    double aux = 0;
-//                                    for (Double d : auxL)
-//                                        aux += d;
-
-//                                double aux = usuario.collection("transacciones")
-//                                        .whereEqualTo("cuenta", document.getString("nombre"))
-//                                        .whereEqualTo("fecha", fecha)
-//                                        .get().getResult().getDocuments().stream().mapToDouble(d -> d.getDouble("dinero")).sum();
+//                                CategoriasCuentas cta = document.toObject(CategoriasCuentas.class);
                                 CategoriasCuentas cta = new CategoriasCuentas(
+                                        email,
+                                        document.getId(),
                                         document.getString("nombre"),
                                         document.getDouble("gastos"),
                                         document.getDouble("gastoMens"),
-                                        document.getDouble("budget"));
+                                        document.getDouble("budget"),
+                                        false);
                                 cuentas.add(cta);
                                 Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
                             } else

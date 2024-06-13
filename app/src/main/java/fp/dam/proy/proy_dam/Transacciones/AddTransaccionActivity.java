@@ -134,10 +134,13 @@ public class AddTransaccionActivity extends AppCompatActivity {
                     for (DocumentSnapshot doc : taskCats.getResult().getDocuments()) {
                         if (doc.get("nombre").toString().equals(categoria)) {
                             CategoriasCuentas cat = new CategoriasCuentas(
+                                    email,
+                                    db.collection("users").document(email).collection("categorias").document().getId(),
                                     doc.getString("nombre"),
                                     doc.getDouble("gastos"),
                                     doc.getDouble("gastoMens"),
-                                    doc.getDouble("budget"));
+                                    doc.getDouble("budget"),
+                                    true);
 
                             Query qTrans = db.collection("users").document(email).collection("transacciones")
                                     .whereEqualTo("categoria", doc.getString("nombre"))
@@ -165,10 +168,13 @@ public class AddTransaccionActivity extends AppCompatActivity {
                     for (DocumentSnapshot doc : taskCtas.getResult().getDocuments()) {
                         if (doc.get("nombre").toString().equals(cuenta)) {
                             CategoriasCuentas cta = new CategoriasCuentas(
+                                    email,
+                                    db.collection("users").document(email).collection("cuentas").document().getId(),
                                     doc.getString("nombre"),
                                     doc.getDouble("gastos"),
                                     doc.getDouble("gastoMens"),
-                                    doc.getDouble("budget"));
+                                    doc.getDouble("budget"),
+                                    false);
 
                             Query qTrans = db.collection("users").document(email).collection("transacciones")
                                     .whereEqualTo("categoria", doc.getString("nombre"))

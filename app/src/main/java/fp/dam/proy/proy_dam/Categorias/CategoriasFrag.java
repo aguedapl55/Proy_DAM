@@ -68,7 +68,7 @@ public class CategoriasFrag extends Fragment {
         rv = rootView.findViewById(R.id.catRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this.getContext()));
         checkRellenar();
-        CatCtaAdapter adapter = new CatCtaAdapter(categorias);
+        CatCtaAdapter adapter = new CatCtaAdapter(categorias, "categorias");
         adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
         taskSize = rootView.findViewById(R.id.taskSize);
@@ -124,10 +124,13 @@ public class CategoriasFrag extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.contains("nombre") && document.contains("gastos")) {
                                     CategoriasCuentas cat = new CategoriasCuentas(
+                                            email,
+                                            document.getId(),
                                             document.getString("nombre"),
                                             document.getDouble("gastos"),
                                             document.getDouble("gastoMens"),
-                                            document.getDouble("budget"));
+                                            document.getDouble("budget"),
+                                            true);
                                     categorias.add(cat);
                                     Log.wtf("APL AÑADIDO", document.getId() + " => " + document.getData());
                                 } else

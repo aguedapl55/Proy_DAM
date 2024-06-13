@@ -139,7 +139,6 @@ public class TransaccionesFrag extends Fragment {
                         }
                     }
                 });
-        //Timestamp now = new Timestamp(new Date(124, 0, 27)); //meses empiezan en 0, años empiezan en 1900
     }
 
 }

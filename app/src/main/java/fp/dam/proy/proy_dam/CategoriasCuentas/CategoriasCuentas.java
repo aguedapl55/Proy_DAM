@@ -1,21 +1,45 @@
 package fp.dam.proy.proy_dam.CategoriasCuentas;
 
 public class CategoriasCuentas {
-    public String nombre
-//    , icon
-    ;
-    //int icon;
-    public double gastos, budget, gastoMens;
+    String nombre;
+    String id, email;
+    double gastos, budget, gastoMens;
+    boolean isCategoria;
 
     public CategoriasCuentas () {}
 
-    public CategoriasCuentas(String nombre, double gastos, double gastoMens, double budget) {
-//    public CategoriasCuentas(String nombre, String icon, double gastos, double budget) {
+    public CategoriasCuentas(String email, String id, String nombre, double gastos, double gastoMens, double budget, boolean isCategoria) {
+        this.email = email;
+        this.id = id;
         this.nombre = nombre;
-//        this.icon = icon;
         this.gastos = gastos;
         this.gastoMens = gastos;
         this.budget = budget;
+        this.isCategoria = isCategoria;
+    }
+
+//    public CategoriasCuentas(String nombre, double gastos, double gastoMens, double budget) {
+//        this.nombre = nombre;
+//        this.gastos = gastos;
+//        this.gastoMens = gastos;
+//        this.budget = budget;
+//    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNombre() {
@@ -25,14 +49,6 @@ public class CategoriasCuentas {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-//    public String getIcon() {
-//        return icon;
-//    }
-
-//    public void setIcon(String icon) {
-//        this.icon = icon;
-//    }
 
     public double getGastos() {
         return gastos;
@@ -56,5 +72,13 @@ public class CategoriasCuentas {
 
     public void setGastoMens(double gastoMens) {
         this.gastoMens = gastoMens;
+    }
+
+    public boolean isCategoria() {
+        return isCategoria;
+    }
+
+    public void setCategoria(boolean categoria) {
+        isCategoria = categoria;
     }
 }

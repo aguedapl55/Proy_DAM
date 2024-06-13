@@ -23,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private EditText emailInput, passwordInput, passConfInput;
     private String email;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
         emailInput = findViewById(R.id.supEdtUsuario);
         passwordInput = findViewById(R.id.supEdtContrasena);
         passConfInput = findViewById(R.id.supEdtContrasena2);
+        db = FirebaseFirestore.getInstance();
     }
 
     public void signup(View v) {
@@ -44,13 +46,12 @@ public class SignUpActivity extends AppCompatActivity {
                 if (!task.isSuccessful())
                         Toast.makeText(this, "No se pudo crear el usuario", Toast.LENGTH_SHORT).show();
                 else {
-
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    configNewUser(db);
+                    configNewUser();
 
                     Intent i = new Intent(this, MainActivity.class);
                     i.putExtra("email", email);
                     i.putExtra("usuario", email);
+                    i.putExtra("password", passwordInput.getText().toString());
                     startActivity(i);
                     finish();
                 }
@@ -62,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private void configNewUser(FirebaseFirestore db) {
+    private void configNewUser() {
         Map<String, Object> base = new HashMap<>();
         DocumentReference usuario = db.collection("users").document(email);
         usuario.delete();
@@ -82,35 +83,26 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-/*
-        Map<String, Object> params = new HashMap<>();
-        params.put("language", "es");
-        params.put("theme", "light");
-        usuario.collection("parametros").add(params);
-*/
-
-        usuario.collection("categorias").add(new CategoriasCuentas("food", 0, 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("entertainment", 0, 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("transport", 0, 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("health", 0, 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("pets", 0, 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("family", 0, 0, 0));
-        usuario.collection("categorias").add(new CategoriasCuentas("clothes", 0, 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("food", "", 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("entertainment", "", 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("transport", "", 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("health", "", 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("pets", "", 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("family", "", 0, 0));
-//        usuario.collection("categorias").add(new CategoriasCuentas("clothes", "", 0, 0));
-
         Map<String, Object> transacciones = new HashMap<>();
         usuario.collection("transacciones").add(transacciones);
 
-        usuario.collection("cuentas").add(new CategoriasCuentas("debit card", 0, 0, 0));
-        usuario.collection("cuentas").add(new CategoriasCuentas("cash", 0, 0, 0));
-//        usuario.collection("cuentas").add(new CategoriasCuentas("debit card", "credit_card", 0, 0));
-//        usuario.collection("cuentas").add(new CategoriasCuentas("cash", "wallet", 0, 0));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "food", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "entertainment", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "transport", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "health", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "pets", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "family", 0, 0, 0, true));
+        usuario.collection("categorias").add(new CategoriasCuentas(email, null, "clothes", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "food", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "entertainment", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "transport", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "health", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "pets", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "family", 0, 0, 0, true));
+//        usuario.collection("categorias").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("categorias").document().getId(), "clothes", 0, 0, 0, true));
+
+        usuario.collection("cuentas").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("cuentas").document().getId(), "debit card", 0, 0, 0, false));
+        usuario.collection("cuentas").add(new CategoriasCuentas(email, db.collection("users").document(email).collection("cuentas").document().getId(), "cash", 0, 0, 0, false));
     }
 
     public void goto_login(View view) {

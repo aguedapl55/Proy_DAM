@@ -53,13 +53,6 @@ public class Transacciones {
         return comentario;
     }
 
-    /*
-    public String getFechaFormated() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return sdf.format(fecha.toDate());
-    }
-     */
-
     public Timestamp getFecha() {
         return fecha;
     }

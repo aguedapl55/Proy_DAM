@@ -32,7 +32,7 @@ public class AddCategoriaActivity extends AppCompatActivity {
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
 
         db = FirebaseFirestore.getInstance();
@@ -60,7 +60,13 @@ public class AddCategoriaActivity extends AppCompatActivity {
             nombre = nombreTxt.getText().toString();
             if (nombre.isEmpty())
                 throw new IllegalArgumentException();
-            CategoriasCuentas categoria = new CategoriasCuentas(nombre, dinero, dineroMens, budget);
+            CategoriasCuentas categoria = new CategoriasCuentas(email,
+                    db.collection("users").document(email).collection("cuentas").document().getId(),
+                    nombre,
+                    dinero,
+                    dineroMens,
+                    budget,
+                    true);
             db.collection("users").document(email).collection("categorias").add(categoria).addOnCompleteListener(task -> {
                 if (task.isSuccessful())
                     Toast.makeText(this, "Se ha añadido la categoria", Toast.LENGTH_SHORT).show();

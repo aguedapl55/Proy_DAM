@@ -1,5 +1,6 @@
 package fp.dam.proy.proy_dam.Principal;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class AjustesActivity extends AppCompatActivity {
     private String usuario, email, password, usuarioOG, emailOG, passwordOG;
     private FirebaseAuth fbAuth;
     private FirebaseFirestore db;
-    private EditText emailInput, passwordInput, passConfInput;
+    private EditText passwordInput, passConfInput;
     Spinner selectUserSpin;
 
     @Override
@@ -40,7 +41,7 @@ public class AjustesActivity extends AppCompatActivity {
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
         emailOG = email; usuarioOG = usuario; passwordOG = password;
 
@@ -76,7 +77,7 @@ public class AjustesActivity extends AppCompatActivity {
                     usersAccesibles.removeIf(d -> d.equals(""));
                 } catch (NullPointerException e) {
                     usersAccesibles.add(usuario);
-                    Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, usersAccesibles);
@@ -106,8 +107,12 @@ public class AjustesActivity extends AppCompatActivity {
             String newPass = passwordInput.getText().toString();
             String confPass = passConfInput.getText().toString();
             if (newPass.equals(confPass)) {
-                fbAuth.getCurrentUser().updatePassword(newPass);
-                Toast.makeText(this, "Se ha cambiado la contraseña con éxito", Toast.LENGTH_SHORT).show();
+                if (newPass.length() < 6)
+                    Toast.makeText(this, "La contraseña introducida es muy corta", Toast.LENGTH_SHORT).show();
+                else {
+                    fbAuth.getCurrentUser().updatePassword(newPass);
+                    Toast.makeText(this, "Se ha cambiado la contraseña con éxito", Toast.LENGTH_SHORT).show();
+                }
             }
             else
                 Toast.makeText(this, "Las contraseñas introducidas no son iguales", Toast.LENGTH_SHORT).show();
@@ -127,13 +132,20 @@ public class AjustesActivity extends AppCompatActivity {
 
     public void borrarCuenta(View v) {
         try {
-            fbAuth.getCurrentUser().delete();
-            db.collection("users").document(email).delete();
-            Intent i = new Intent(this, LoginActivity.class);
-            startActivity(i);
-            finish();
+            AlertDialog.Builder constructor = new AlertDialog.Builder(v.getContext());
+            constructor.setTitle("¿Borrar cuenta?")
+                    .setMessage(new StringBuilder().append("¿Desea borrar su cuenta? (").append(usuario).append(")"))
+                    .setPositiveButton("Eliminar", (dialog, which) -> {
+                        fbAuth.getCurrentUser().delete();
+                        db.collection("users").document(email).delete();
+                        Intent i = new Intent(this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                    })
+                    .setNegativeButton("Cancelar", (dialog, which) -> Toast.makeText(v.getContext(), "Se ha cancelado la acción", Toast.LENGTH_SHORT).show())
+                    .create().show();
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
     }
 

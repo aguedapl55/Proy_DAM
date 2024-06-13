@@ -31,7 +31,7 @@ public class AddCuentaActivity extends AppCompatActivity {
             password = getIntent().getExtras().getString("password");
             usuario = getIntent().getExtras().getString("usuario");
         } catch (NullPointerException e) {
-            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Ha habido un error al iniciar la actividad", Toast.LENGTH_LONG).show();
         }
 
         db = FirebaseFirestore.getInstance();
@@ -55,12 +55,17 @@ public class AddCuentaActivity extends AppCompatActivity {
         String nombre;
         try {
             gastos = gastoMens = Double.parseDouble(dineroTxt.getText().toString());
-            //gastos = BigDecimal.valueOf(gastos).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //formating
             budget = Double.parseDouble(budgetTxt.getText().toString());
             nombre = nombreTxt.getText().toString();
             if (nombre.isEmpty())
                 throw new IllegalArgumentException();
-            CategoriasCuentas cuenta = new CategoriasCuentas(nombre, gastos, gastoMens, budget);
+            CategoriasCuentas cuenta = new CategoriasCuentas(email,
+                    db.collection("users").document(email).collection("cuentas").document().getId(),
+                    nombre,
+                    gastos,
+                    gastoMens,
+                    budget,
+                    false);
             db.collection("users").document(email).collection("cuentas").add(cuenta).addOnCompleteListener(task -> {
                 if (task.isSuccessful())
                     Toast.makeText(this, "Se ha añadido la cuenta", Toast.LENGTH_SHORT).show();

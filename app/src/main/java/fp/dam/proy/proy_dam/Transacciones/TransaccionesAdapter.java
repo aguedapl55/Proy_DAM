@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -48,6 +49,7 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView dinero, categoria, cuenta, comentario;
         private String id, email;
+        private Timestamp fecha;
         FirebaseFirestore db;
 
         public ViewHolder(View v) {
@@ -66,29 +68,18 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
                                 .append("\n- categoría: ").append(categoria.getText().toString())
                                 .append("\n- cuenta: ").append(cuenta.getText().toString())
                                 .append("\n- comentario: ").append(comentario.getText().toString().isEmpty() ? "N/A" : comentario.getText().toString()))
-                        .setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                db.collection("users").document(email).collection("transacciones").get().addOnCompleteListener(task -> {
-                                    for (DocumentSnapshot doc : task.getResult()) {
-                                        if (doc.getId().equals(id)) {
-                                            db.collection("users").document(email).collection("transacciones").document(doc.getId()).delete().addOnCompleteListener(task2 -> {
-                                                if (task2.isSuccessful())
-                                                    Toast.makeText(onLCList.getContext(), "Se ha eliminado la transacción", Toast.LENGTH_SHORT);
-                                            });
-                                        }
-                                        Log.wtf("APL TransAdpt doc.getID.equals(id)", "getID = " + doc.getId() + "; id = " + id + "; equivalencia = " + doc.getId().equals(id));
+                        .setPositiveButton("Eliminar", (dialog, which) -> {
+                            db.collection("users").document(email).collection("transacciones").get().addOnCompleteListener(task -> {
+                                for (DocumentSnapshot doc : task.getResult()) {
+                                    if (doc.getId().equals(id)) {
+                                        db.collection("users").document(email).collection("transacciones").document(doc.getId()).delete();
                                     }
-                                });
-                                Toast.makeText(onLCList.getContext(), "ELIMINAR", Toast.LENGTH_SHORT).show();
-                            }
+                                    Log.wtf("APL TransAdpt doc.getID.equals(id)", "getID = " + doc.getId() + "; id = " + id + "; equivalencia = " + doc.getId().equals(id));
+                                }
+                                Toast.makeText(onLCList.getContext(), "Se ha eliminado la transacción", Toast.LENGTH_SHORT);
+                            });
                         })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(onLCList.getContext(), "Se ha cancelado la acción", Toast.LENGTH_SHORT).show();
-                            }
-                        })
+                        .setNegativeButton("Cancelar", (dialog, which) -> Toast.makeText(onLCList.getContext(), "Se ha cancelado la acción", Toast.LENGTH_SHORT).show())
                         .create().show();
                 return true;
             });
@@ -101,6 +92,7 @@ public class TransaccionesAdapter extends RecyclerView.Adapter<TransaccionesAdap
             comentario.setText(transacciones.getComentario());
             this.id = transacciones.getId();
             this.email = transacciones.getEmail();
+            this.fecha = transacciones.getFecha();
         }
     }
 }
